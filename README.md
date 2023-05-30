@@ -1,0 +1,2 @@
+# PINGPONG-SERVER
+About DDD 9기 IOS 3팀 Server
