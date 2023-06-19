@@ -45,7 +45,7 @@ jobs:
       
     # Docker 이미지 Build
     - name: docker image build
-      run: docker build -t ios-app .
+      run: docker build -t hyesookim95/pingpong-dev .
     
     # DockerHub Login
     - name: docker login 
@@ -56,5 +56,5 @@ jobs:
 
     # Docker Hub push
     - name: docker Hub push
-      run: docker push hyesookim95/pingpong
+      run: docker push hyesookim95/pingpong-dev
       
