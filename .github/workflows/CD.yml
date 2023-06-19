@@ -62,7 +62,7 @@ jobs:
       uses: appleboy/ssh-action@v0.1.6
       with:
         host: ${{ secrets.DEV_SERVER_IP }}
-        username: ${{ DEV_SERVER_USER }}
+        username: ${{ secrets.DEV_SERVER_USER }}
         key: ${{ secrets.DEV_SERVER_KEY }}
         port: ${{ secrets.DEV_SERVER_PORT }}
         timeout: 60s
