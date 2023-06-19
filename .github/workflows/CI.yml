@@ -43,18 +43,18 @@ jobs:
       if: contains(github.ref, 'develop')
       run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean copyGitSubmodule build
       
-    # Docker 이미지 Build (2)
+    # Docker 이미지 Build
     - name: docker image build
-      run: docker build -t hyesookim95/pingpong .
+      run: docker build -t ios-app .
     
-    # DockerHub Login (3)
+    # DockerHub Login
     - name: docker login 
       uses: docker/login-action@v2
       with: 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    # Docker Hub push (4)
+    # Docker Hub push
     - name: docker Hub push
-      run: docker push lucaskang134/pingpong
+      run: docker push hyesookim95/pingpong
       
