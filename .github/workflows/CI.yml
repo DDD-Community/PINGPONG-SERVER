@@ -40,7 +40,6 @@ jobs:
       
     # YAML은 submodule에서 copy
     - name: Build with Gradle
-      if: contains(github.ref, 'develop')
       run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean copyGitSubmodule build
       
     # Docker 이미지 Build
