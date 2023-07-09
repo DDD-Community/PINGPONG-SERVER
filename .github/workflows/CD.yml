@@ -55,7 +55,7 @@ jobs:
 
     # Docker Hub push
     - name: docker Hub push
-      run: docker push hyesookim95/pingpong-dev
+      run: docker push hyesookim95/pingpong-dev #도커허브계정/이미지이름
       
     # AWS EC2 Server Connect & Docker 명령어 실행 
     - name: AWS EC2 Connection
@@ -69,6 +69,7 @@ jobs:
         script: |
           sudo docker stop ios-app
           sudo docker rm ios-app
+          sudo docker pull hyesookim95/pingpong-dev
           sudo docker run -it -d -p 9090:9090 --name ios-app hyesookim95/pingpong-dev
     
  
