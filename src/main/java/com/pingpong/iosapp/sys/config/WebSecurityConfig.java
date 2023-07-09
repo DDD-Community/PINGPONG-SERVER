@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @RequiredArgsConstructor
 @Configuration
@@ -23,7 +22,6 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-                .requestMatchers(toH2Console()) // h2 DB 사용시 콘솔도 무시
                 .requestMatchers("/static/**"); //정적 리소스 such as 이미지 or html
     }
 
@@ -31,17 +29,12 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeRequests() // 인증,읹가
-                    .requestMatchers("/login", "/signup").permitAll() //이 요청들은 인증/인가 작업을 수행하지 않음.
+                .authorizeRequests() // 인증,인가
+                    .requestMatchers("/v3/api-docs/**", "/swagger*/**", "/login", "/signup").permitAll() //이 요청들은 인증/인가 작업을 수행하지 않음.
                     .anyRequest().authenticated() //나머지 요청에 대해서는 인가(권한)는 필요하지 않지만 인증(사용자정보)은 진행함.
                 .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/articles")
-                .and()
-                .logout()
-                    .logoutSuccessUrl("/login")
-                    .invalidateHttpSession(true)
+                .formLogin().disable()
+                .logout().invalidateHttpSession(true)
                 .and()
                 .build();
     }
