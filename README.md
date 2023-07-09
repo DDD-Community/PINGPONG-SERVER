@@ -7,8 +7,10 @@ About DDD 9기 IOS 3팀 SERVER
 ## Skill Set
 - 🍃 Spring 3.0.3
 - Java 17
-- Jpa/QueryDsl
+- Jpa/QueryDsl/PostgreSQL
 - Github action
+- AWS EC2/RDS
+- Docker
 
 ## 🌟 Team
 |Developer|Designer|Designer|Developer|Developer|
