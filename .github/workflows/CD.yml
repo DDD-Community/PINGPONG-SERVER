@@ -67,9 +67,9 @@ jobs:
         port: ${{ secrets.DEV_SERVER_PORT }}
         timeout: 60s
         script: |
-          sudo docker stop ios-app
-          sudo docker rm ios-app
+          sudo docker stop quote-bakery
+          sudo docker rm quote-bakery
           sudo docker pull hyesookim95/pingpong-dev
-          sudo docker run -it -d -p 9090:9090 --name ios-app hyesookim95/pingpong-dev
+          sudo docker run -it -d -p 9090:9090 --name quote-bakery hyesookim95/pingpong-dev
     
  
