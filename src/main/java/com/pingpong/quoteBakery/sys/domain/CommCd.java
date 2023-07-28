@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -29,7 +31,10 @@ public class CommCd extends BaseEntity {
     @Column(name = "commCd", length = 100) // 공통코드
     private String commCd;
 
-
     @Column(name = "commNm", length = 100) // 공통코드명
     private String commNm;
+
+    @ManyToOne
+    @JoinColumn(name = "comm_cd_tp_id")
+    private CommCdTp commCdTp;
 }
