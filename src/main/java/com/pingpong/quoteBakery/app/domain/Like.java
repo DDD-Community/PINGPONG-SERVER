@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Like extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
-    @SequenceGenerator(name = "sequence_generator", sequenceName = "my_sequence", allocationSize = 50)
+    @SequenceGenerator(name = "sequence_generator", sequenceName = "like_sequence", allocationSize = 50)
     private Long like_id;
 
     @ManyToOne

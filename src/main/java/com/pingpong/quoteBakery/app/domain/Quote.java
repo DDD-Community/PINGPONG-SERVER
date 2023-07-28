@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class Quote extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
-    @SequenceGenerator(name = "sequence_generator", sequenceName = "my_sequence", allocationSize = 50)
+    @SequenceGenerator(name = "sequence_generator", sequenceName = "quote_sequence", allocationSize = 50)
     @Column(name = "quote_id")
     private Long quoteId;
 

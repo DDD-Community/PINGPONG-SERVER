@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class UserPreference extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
-    @SequenceGenerator(name = "sequence_generator", sequenceName = "my_sequence", allocationSize = 50)
+    @SequenceGenerator(name = "sequence_generator", sequenceName = "user_pref_sequence", allocationSize = 50)
     @Column(name = "user_pref_id")
     private Long userPrefId;
 
