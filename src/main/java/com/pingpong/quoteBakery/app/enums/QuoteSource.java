@@ -16,7 +16,7 @@ public enum QuoteSource {
     FILM("film", "드라마/영화"),
     ANIME("anime", "애니메이션"),
     BOOK("book", "책"),
-    PROBERB("Proverb", "속담");
+    PROVERB("Proverb", "속담");
 
     private final String cd;
     private final String nm;
