@@ -1,6 +1,18 @@
 package com.pingpong.quoteBakery.sys.domain;
 
-import jakarta.persistence.*;
+import com.pingpong.quoteBakery.app.domain.Like;
+import com.pingpong.quoteBakery.app.domain.Scrap;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,9 +20,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,6 +37,12 @@ public class User implements UserDetails {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Like> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Scrap> scraps = new HashSet<>();
 
     @Builder
     public User(String email, String password, String auth) {
