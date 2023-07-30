@@ -8,7 +8,7 @@ import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -21,7 +21,7 @@ public class CommCdConverter extends CommonConverter {
 
         CommCdTpResource resource  = convertToGeneric(commCdTpDto, CommCdTpResource.class);
         if(commCdTpDto.getCommCds() != null){
-            resource.setCommCds(commCdTpDto.getCommCds().stream().map(dto -> this.convertToGeneric(dto, CommCdResource.class)).collect(Collectors.toSet()));
+            resource.setCommCds(commCdTpDto.getCommCds().stream().map(dto -> this.convertToGeneric(dto, CommCdResource.class)).collect(Collectors.toList()));
         }
 
         return resource;
@@ -30,9 +30,9 @@ public class CommCdConverter extends CommonConverter {
     public CommCdTpDto convertEntityToDto(CommCdTp commCdTp){
         CommCdTpDto commCdTpDto = convertToGeneric(commCdTp, CommCdTpDto.class);
 
-        Set<CommCd> temp = commCdTp.getCommCds();
+        List<CommCd> temp = commCdTp.getCommCds();
         if(commCdTp.getCommCds() != null){
-            commCdTpDto.setCommCds(commCdTp.getCommCds().stream().map(entity -> this.convertToGeneric(entity, CommCdDto.class)).collect(Collectors.toSet()));
+            commCdTpDto.setCommCds(commCdTp.getCommCds().stream().map(entity -> this.convertToGeneric(entity, CommCdDto.class)).collect(Collectors.toList()));
         }
         return commCdTpDto;
     }
