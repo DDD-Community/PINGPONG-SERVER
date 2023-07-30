@@ -3,7 +3,7 @@ package com.pingpong.quoteBakery.sys.resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 
 @Data
@@ -19,6 +19,6 @@ public class CommCdTpResource {
     private String commCdTpNm;
 
     @Schema(description = "코드리스트")
-    private Set<CommCdResource> commCds;
+    private List<CommCdResource> commCds;
 }
 

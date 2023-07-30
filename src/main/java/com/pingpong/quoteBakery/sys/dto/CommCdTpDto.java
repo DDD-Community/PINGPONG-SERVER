@@ -2,7 +2,7 @@ package com.pingpong.quoteBakery.sys.dto;
 
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 
 @Data
@@ -11,6 +11,6 @@ public class CommCdTpDto {
     private String commCdTpCd;
     private String commCdTpNm;
 
-    private Set<CommCdDto> commCds;
+    private List<CommCdDto> commCds;
 }
 

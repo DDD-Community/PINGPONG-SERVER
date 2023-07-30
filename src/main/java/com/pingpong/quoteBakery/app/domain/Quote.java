@@ -1,19 +1,13 @@
 package com.pingpong.quoteBakery.app.domain;
 
 import com.pingpong.quoteBakery.com.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 명언 Entity
@@ -47,8 +41,8 @@ public class Quote extends BaseEntity {
     private String mood;
 
     @OneToMany(mappedBy = "quote")
-    private Set<Like> likes = new HashSet<>();
+    private List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "quote")
-    private Set<Scrap> scraps = new HashSet<>();
+    private List<Scrap> scraps = new ArrayList<>();
 }

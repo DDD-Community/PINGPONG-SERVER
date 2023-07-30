@@ -9,10 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,10 +38,10 @@ public class User implements UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private Set<Like> likes = new HashSet<>();
+    private List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private Set<Scrap> scraps = new HashSet<>();
+    private List<Scrap> scraps = new ArrayList<>();
 
     @Builder
     public User(String email, String password, String auth) {
