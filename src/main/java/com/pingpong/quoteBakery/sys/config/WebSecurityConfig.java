@@ -31,7 +31,7 @@ public class WebSecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeRequests() // 인증,인가
-                    .requestMatchers("/v3/api-docs/**", "/swagger*/**", "/code/**", "/onboard/**", "/login", "/signup").permitAll() //이 요청들은 인증/인가 작업을 수행하지 않음.
+                    .requestMatchers("/**").permitAll() //이 요청들은 인증/인가 작업을 수행하지 않음.
                     .anyRequest().authenticated() //나머지 요청에 대해서는 인가(권한)는 필요하지 않지만 인증(사용자정보)은 진행함.
                 .and()
                 .formLogin().disable()

@@ -2,7 +2,7 @@ package com.pingpong.quoteBakery.app.controller;
 
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.resource.UserPrefCreateResource;
-import com.pingpong.quoteBakery.app.service.OnBoardService;
+import com.pingpong.quoteBakery.app.service.UserPrefService;
 import com.pingpong.quoteBakery.sys.resource.CommCdConverter;
 import com.pingpong.quoteBakery.sys.resource.CommCdTpResource;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Validated
 @RequestMapping("/onboard")
 public class  OnBoardController {
-    private final OnBoardService onBoardService;
+    private final UserPrefService userPrefService;
     private final CommCdConverter cdConverter;
 
     /**
@@ -42,7 +42,7 @@ public class  OnBoardController {
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
     )
     public List<CommCdTpResource> searchCommCds(){
-        return onBoardService.searchUserPrefCode().stream().map(cdConverter::convertDtoToResource).collect(Collectors.toList());
+        return userPrefService.searchUserPrefCode().stream().map(cdConverter::convertDtoToResource).collect(Collectors.toList());
     }
 
     /**
@@ -56,6 +56,6 @@ public class  OnBoardController {
     public Long saveUserPref(@PathVariable("userId") Long userId,
         @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserPrefCreateResource createResource){
         createResource.setUserId(userId);
-        return onBoardService.saveUserPref(cdConverter.convertToGeneric(createResource, UserPrefDto.class));
+        return userPrefService.saveUserPref(cdConverter.convertToGeneric(createResource, UserPrefDto.class));
     }
 }
