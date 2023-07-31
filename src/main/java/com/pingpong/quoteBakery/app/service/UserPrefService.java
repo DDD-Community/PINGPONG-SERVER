@@ -17,5 +17,11 @@ public interface UserPrefService {
      * @return
      */
     Long saveUserPref(UserPrefDto userPrefDto);
+
+    /**
+     * @param userId
+     * @return
+     */
+    UserPrefDto getUserPrefByUserId(Long userId);
 }
 

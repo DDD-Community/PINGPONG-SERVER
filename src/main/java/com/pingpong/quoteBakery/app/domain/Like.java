@@ -25,7 +25,7 @@ public class Like extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
     @SequenceGenerator(name = "sequence_generator", sequenceName = "like_sequence", allocationSize = 50)
-    private Long like_id;
+    private Long likeId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

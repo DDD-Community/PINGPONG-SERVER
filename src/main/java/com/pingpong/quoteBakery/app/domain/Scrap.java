@@ -25,7 +25,7 @@ public class Scrap extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
     @SequenceGenerator(name = "sequence_generator", sequenceName = "scrap_sequence", allocationSize = 50)
-    private Long scrap_id;
+    private Long scrapId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

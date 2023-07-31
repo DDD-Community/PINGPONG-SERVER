@@ -4,6 +4,7 @@ import com.pingpong.quoteBakery.app.domain.UserPreference;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.persistence.UserPreferenceRepository;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
+import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.sys.domain.User;
 import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
 import com.pingpong.quoteBakery.sys.service.CommCdTpService;
@@ -26,6 +27,7 @@ public class UserPrefServiceImpl implements UserPrefService {
     private final CommCdTpService commCdTpService;
     private final UserService userService;
     private final UserPreferenceRepository userPreferenceRepository;
+    private final CommonConverter commonConverter;
 
     public static final String FLAVOR = "flavor";
     public static final String SOURCE = "source";
@@ -40,5 +42,13 @@ public class UserPrefServiceImpl implements UserPrefService {
     public Long saveUserPref(UserPrefDto userPrefDto) {
         User user = userService.findById(userPrefDto.getUserId());
         return userPreferenceRepository.save(UserPreference.toEntity(userPrefDto, user)).getUserPrefId();
+    }
+
+    @Override
+    public UserPrefDto getUserPrefByUserId(Long userId) {
+        UserPrefDto userPrefDto = commonConverter.convertToGeneric(userPreferenceRepository.findByUser_Id(userId), UserPrefDto.class);
+        userPrefDto.setUserId(userId);
+
+        return userPrefDto;
     }
 }
