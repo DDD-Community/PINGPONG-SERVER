@@ -1,7 +1,7 @@
 package com.pingpong.quoteBakery.app.service;
 
+import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
-
 import java.util.List;
 
 public interface OnBoardService {
@@ -10,5 +10,12 @@ public interface OnBoardService {
      * @return
      */
     List<CommCdTpDto> searchUserPrefCode();
+
+    /**
+     * 사용자 취향 저장
+     * @param userPrefDto
+     * @return
+     */
+    Long saveUserPref(UserPrefDto userPrefDto);
 }
 
