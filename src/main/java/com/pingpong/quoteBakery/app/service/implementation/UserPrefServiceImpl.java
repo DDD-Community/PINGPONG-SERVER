@@ -3,7 +3,7 @@ package com.pingpong.quoteBakery.app.service.implementation;
 import com.pingpong.quoteBakery.app.domain.UserPreference;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.persistence.UserPreferenceRepository;
-import com.pingpong.quoteBakery.app.service.OnBoardService;
+import com.pingpong.quoteBakery.app.service.UserPrefService;
 import com.pingpong.quoteBakery.sys.domain.User;
 import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
 import com.pingpong.quoteBakery.sys.service.CommCdTpService;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class OnBoardServiceImpl implements OnBoardService {
+public class UserPrefServiceImpl implements UserPrefService {
 
     private final CommCdTpService commCdTpService;
     private final UserService userService;
