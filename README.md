@@ -2,15 +2,16 @@
 About DDD 9기 IOS 3팀 SERVER
 
 ## About Service
-- 🥖 명언제빵소
+- 🥖 명언제과점
 
-## Skill Set
-- 🍃 Spring 3.0.3
+## Skill Stack
+- 🍃 SpringBoot 3.0.3
 - Java 17
-- Jpa/QueryDsl/PostgreSQL
-- Github action
+- JPA/QueryDsl/PostgreSQL
+- Github Action
 - AWS EC2/RDS
 - Docker
+- Swagger
 
 ## 🌟 Team
 |Developer|Designer|Designer|Developer|Developer|
