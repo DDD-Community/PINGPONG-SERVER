@@ -1,10 +1,6 @@
 package com.pingpong.quoteBakery.app.resource;
 
-import com.pingpong.quoteBakery.app.dto.LikeDto;
-import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Data;
 
 
@@ -29,13 +25,5 @@ public class QuoteResource {
 
     @Schema(description = "상황")
     private String mood;
-
-
-    @Schema(description = "좋아요")
-    private List<LikeDto> likes = new ArrayList<>();
-
-
-    @Schema(description = "보관")
-    private List<ScrapDto> scraps = new ArrayList<>();
 }
 

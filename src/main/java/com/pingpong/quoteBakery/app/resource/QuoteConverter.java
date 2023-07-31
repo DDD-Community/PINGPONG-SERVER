@@ -16,24 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class QuoteConverter extends CommonConverter {
-
-    public QuoteResource convertDtoToResource(QuoteDto quoteDto){
-        if(quoteDto == null) return null;
-
-        QuoteResource resource  = convertToGeneric(quoteDto, QuoteResource.class);
-
-        List<LikeDto> likes = quoteDto.getLikes();
-        List<ScrapDto> scraps = quoteDto.getScraps();
-        if(likes != null){
-            resource.setLikes(quoteDto.getLikes().stream().map(dto -> this.convertToGeneric(dto, LikeDto.class)).collect(Collectors.toList()));
-        }
-        if(scraps != null){
-            resource.setScraps(quoteDto.getScraps().stream().map(dto -> this.convertToGeneric(dto, ScrapDto.class)).collect(Collectors.toList()));
-        }
-
-        return resource;
-    }
-
     // RandomQuoteResource는 항상 사용자별로 요청됨.
     public RandomQuoteResource convertDtoToRandomResource(QuoteDto quoteDto){
         if(quoteDto == null) return null;
