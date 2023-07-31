@@ -1,6 +1,7 @@
 package com.pingpong.quoteBakery.app.service;
 
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import java.util.List;
 
 public interface QuoteSearchService {
     /**
@@ -17,5 +18,9 @@ public interface QuoteSearchService {
      * @return
      */
     QuoteDto getRandomQuote(QuoteDto searchDto);
+
+    List<QuoteDto> getLikedQuotes(Long userId);
+
+    List<QuoteDto> getScrapedQuotes(Long userId);
 }
 

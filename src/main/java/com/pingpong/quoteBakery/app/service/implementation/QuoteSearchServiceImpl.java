@@ -2,10 +2,14 @@ package com.pingpong.quoteBakery.app.service.implementation;
 
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
+import com.pingpong.quoteBakery.app.persistence.LikeRepository;
 import com.pingpong.quoteBakery.app.persistence.QuoteRepository;
+import com.pingpong.quoteBakery.app.persistence.ScrapRepository;
 import com.pingpong.quoteBakery.app.resource.QuoteConverter;
 import com.pingpong.quoteBakery.app.service.QuoteSearchService;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuoteSearchServiceImpl implements QuoteSearchService {
     private final UserPrefService userPrefService;
     private final QuoteRepository quoteRepository;
+    private final LikeRepository likeRepository;
+    private final ScrapRepository scrapRepository;
     private final QuoteConverter quoteConverter;
 
     @Override
@@ -35,4 +41,23 @@ public class QuoteSearchServiceImpl implements QuoteSearchService {
 
         return quoteDto;
     }
+
+    @Override
+    public List<QuoteDto> getLikedQuotes(Long userId) {
+
+        return likeRepository.findAllByUser_Id(userId)
+            .stream().map(entity ->
+                quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class))
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<QuoteDto> getScrapedQuotes(Long userId) {
+        return scrapRepository.findAllByUser_Id(userId)
+            .stream().map(entity ->
+                quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class))
+            .collect(Collectors.toList());
+    }
+
+
 }
