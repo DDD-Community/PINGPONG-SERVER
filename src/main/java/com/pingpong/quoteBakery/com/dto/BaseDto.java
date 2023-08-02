@@ -2,9 +2,11 @@ package com.pingpong.quoteBakery.com.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class BaseDto implements Serializable {
     private String rmk;
     private String regrId;

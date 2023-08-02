@@ -2,10 +2,12 @@ package com.pingpong.quoteBakery.com.resource;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 
-@Data
+@Getter
+@Setter
 public class PageResource {
     @Schema(description = "page")
     private Integer page;

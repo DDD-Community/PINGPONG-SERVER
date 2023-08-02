@@ -1,11 +1,12 @@
 package com.pingpong.quoteBakery.sys.dto;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 public class CommCdTpDto {
     private Long commCdTpId;
     private String commCdTpCd;

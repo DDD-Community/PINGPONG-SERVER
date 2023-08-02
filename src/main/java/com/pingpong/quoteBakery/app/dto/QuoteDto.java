@@ -1,12 +1,15 @@
 package com.pingpong.quoteBakery.app.dto;
 
+import com.pingpong.quoteBakery.com.dto.BaseDto;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
-public class QuoteDto {
+@Getter
+@Setter
+public class QuoteDto extends BaseDto {
     private Long quoteId;
 
     private String content;
