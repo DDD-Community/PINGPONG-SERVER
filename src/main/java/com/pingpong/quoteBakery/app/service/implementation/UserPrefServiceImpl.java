@@ -40,8 +40,15 @@ public class UserPrefServiceImpl implements UserPrefService {
     @Override
     @Transactional
     public Long saveUserPref(UserPrefDto userPrefDto) {
+        userPrefDto.setFlavor(convertListToString(userPrefDto.getFlavors()));
+        userPrefDto.setSource(convertListToString(userPrefDto.getSources()));
+
         User user = userService.findById(userPrefDto.getUserId());
         return userPreferenceRepository.save(UserPreference.toEntity(userPrefDto, user)).getUserPrefId();
+    }
+
+    private String convertListToString(List<String> list) {
+        return String.join(",", list);
     }
 
     @Override
