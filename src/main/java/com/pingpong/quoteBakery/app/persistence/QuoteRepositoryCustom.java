@@ -6,7 +6,9 @@ package com.pingpong.quoteBakery.app.persistence;
 
 import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import java.util.List;
 
 public interface QuoteRepositoryCustom {
     Quote searchQuote(QuoteDto searchDto);
+    List<Quote> searchQutes(QuoteDto searchDto);
 }

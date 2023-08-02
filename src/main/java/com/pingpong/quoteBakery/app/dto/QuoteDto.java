@@ -29,5 +29,11 @@ public class QuoteDto extends BaseDto {
     // search
     private String keyword;
     private Long userId;
+    private String orderBy;
+    private List<String> flavors;
+
+    private List<String> sources;
+
+    private List<String> moods;
 }
 

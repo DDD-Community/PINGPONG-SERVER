@@ -69,6 +69,11 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
+    public List<QuoteDto> searchQuotes(QuoteDto searchDto) {
+        return quoteRepository.searchQutes(searchDto).stream().map(quoteConverter::convertEntityToDto).collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public Long saveLike(LikeDto likeDto) {
         User user = userService.findById(likeDto.getUserId());

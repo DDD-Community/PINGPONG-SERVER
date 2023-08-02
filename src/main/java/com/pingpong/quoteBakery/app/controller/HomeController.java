@@ -5,7 +5,7 @@ import com.pingpong.quoteBakery.app.dto.QuoteDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import com.pingpong.quoteBakery.app.resource.LikeResource;
 import com.pingpong.quoteBakery.app.resource.QuoteConverter;
-import com.pingpong.quoteBakery.app.resource.QuoteSearchResource;
+import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchResource;
 import com.pingpong.quoteBakery.app.resource.RandomQuoteResource;
 import com.pingpong.quoteBakery.app.resource.ScrapResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
@@ -53,7 +53,7 @@ public class HomeController {
         description  = "홈 화면 랜덤 명언 굽기",
         responses = { @ApiResponse(responseCode = "200", description = "굽기 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
     )
-    public RandomQuoteResource bakeRandomQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody QuoteSearchResource searchResource){
+    public RandomQuoteResource bakeRandomQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody RandomQuoteSearchResource searchResource){
 
         return quoteConverter.convertDtoToRandomResource(
             quoteService.getRandomQuote(quoteConverter.convertToGeneric(searchResource, QuoteDto.class)));

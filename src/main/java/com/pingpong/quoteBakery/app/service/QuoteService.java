@@ -25,6 +25,7 @@ public interface QuoteService {
 
     List<QuoteDto> getScrapedQuotes(Long userId);
 
+    List<QuoteDto> searchQuotes(QuoteDto searchDto);
 
     /**
      * @param likeDto

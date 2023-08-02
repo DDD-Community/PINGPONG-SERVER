@@ -5,14 +5,20 @@
 package com.pingpong.quoteBakery.app.persistence.implementation;
 
 import static com.pingpong.quoteBakery.app.domain.QQuote.quote;
+import static com.querydsl.core.types.ExpressionUtils.orderBy;
 
 import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
 import com.pingpong.quoteBakery.app.persistence.QuoteRepositoryCustom;
 import com.pingpong.quoteBakery.com.entity.QueryDslSupport;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.StringPath;
 import io.micrometer.common.util.StringUtils;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,17 +30,19 @@ public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteReposit
     private BooleanBuilder makeBlnBldr(QuoteDto searchDto) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (searchDto.getSource() != null) {
-            builder.and(quote.source.eq(searchDto.getSource()));
+        if (searchDto.getSources() != null && !searchDto.getSources().isEmpty()) {
+            builder.and(quote.source.in(searchDto.getSources()));
         }
-        if (searchDto.getFlavor() != null) {
-            builder.and(quote.flavor.eq(searchDto.getFlavor()));
+        if (searchDto.getFlavors() != null && !searchDto.getFlavors().isEmpty()) {
+            builder.and(quote.flavor.in(searchDto.getFlavors()));
         }
-        if (searchDto.getMood() != null) {
-            builder.and(quote.mood.eq(searchDto.getMood()));
+        if (searchDto.getMoods() != null && !searchDto.getMoods().isEmpty()) {
+            builder.and(quote.mood.in(searchDto.getMoods()));
         }
         if (!StringUtils.isEmpty(searchDto.getKeyword())) {
-            builder.and(quote.content.like(searchDto.getKeyword()));
+            BooleanExpression keywordInContent = quote.content.containsIgnoreCase(searchDto.getKeyword());
+            BooleanExpression keywordInAuthor = quote.author.containsIgnoreCase(searchDto.getKeyword());
+            builder.and(keywordInContent.or(keywordInAuthor));
         }
 
         return builder;
@@ -45,5 +53,20 @@ public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteReposit
         BooleanBuilder builder = this.makeBlnBldr(searchDto);
 
         return getQueryFactory().selectFrom(quote).where(builder).orderBy(NumberExpression.random().asc()).fetchFirst();
+    }
+
+    @Override
+    public List<Quote> searchQutes(QuoteDto searchDto) {
+        BooleanBuilder builder = this.makeBlnBldr(searchDto);
+
+        return getQueryFactory().selectFrom(quote)
+            .where(builder)
+            .orderBy(createOrderSpecifier(quote.content, searchDto.getOrderBy()))
+            .fetch();
+    }
+
+    private OrderSpecifier<?> createOrderSpecifier(StringPath sortProperty, String orderBy) {
+        return "DESC".equalsIgnoreCase(orderBy) ?
+            new OrderSpecifier<>(Order.DESC, sortProperty) : new OrderSpecifier<>(Order.ASC, sortProperty);
     }
 }
