@@ -12,15 +12,15 @@ public class QuoteSearchResource {
     @Schema(description = "키워드")
     private String keyword;
 
-    @Schema(description = "맛")
+    @Schema(description = "맛 리스트")
     private List<String> flavors;
 
 
-    @Schema(description = "출처")
+    @Schema(description = "출처 리스트")
     private List<String> sources;
 
 
-    @Schema(description = "상황")
+    @Schema(description = "상황 리스트")
     private List<String> moods;
 
     @Schema(description = "정렬방식 ex)ASC/DESC")
