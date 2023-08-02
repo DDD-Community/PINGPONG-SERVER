@@ -1,5 +1,8 @@
 package com.pingpong.quoteBakery.app.service.implementation;
 
+import static com.pingpong.quoteBakery.com.util.StringUtil.convertListToString;
+import static com.pingpong.quoteBakery.com.util.StringUtil.convertStringToList;
+
 import com.pingpong.quoteBakery.app.domain.UserPreference;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.persistence.UserPreferenceRepository;
@@ -40,20 +43,19 @@ public class UserPrefServiceImpl implements UserPrefService {
     @Override
     @Transactional
     public Long saveUserPref(UserPrefDto userPrefDto) {
-        userPrefDto.setFlavor(convertListToString(userPrefDto.getFlavors()));
-        userPrefDto.setSource(convertListToString(userPrefDto.getSources()));
+        userPrefDto.setFlavor(convertListToString(",", userPrefDto.getFlavors()));
+        userPrefDto.setSource(convertListToString(",", userPrefDto.getSources()));
 
         User user = userService.findById(userPrefDto.getUserId());
         return userPreferenceRepository.save(UserPreference.toEntity(userPrefDto, user)).getUserPrefId();
     }
 
-    private String convertListToString(List<String> list) {
-        return String.join(",", list);
-    }
-
     @Override
     public UserPrefDto getUserPrefByUserId(Long userId) {
         UserPrefDto userPrefDto = commonConverter.convertToGeneric(userPreferenceRepository.findByUser_Id(userId), UserPrefDto.class);
+        // "nutty,spicy" -> ['nutty', 'spicy']
+        userPrefDto.setFlavors(convertStringToList(",", userPrefDto.getFlavor()));
+        userPrefDto.setSources(convertStringToList(",", userPrefDto.getSource()));
         userPrefDto.setUserId(userId);
 
         return userPrefDto;
