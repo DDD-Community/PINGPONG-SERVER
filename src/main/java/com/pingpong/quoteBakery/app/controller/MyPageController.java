@@ -2,7 +2,7 @@ package com.pingpong.quoteBakery.app.controller;
 
 import com.pingpong.quoteBakery.app.resource.QuoteConverter;
 import com.pingpong.quoteBakery.app.resource.QuoteResource;
-import com.pingpong.quoteBakery.app.service.QuoteSearchService;
+import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.sys.resource.CommCdTpResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequestMapping("/mypage")
 public class MyPageController {
-    private final QuoteSearchService quoteSearchService;
+    private final QuoteService quoteService;
     private  final QuoteConverter quoteConverter;
 
     /**
@@ -39,7 +39,7 @@ public class MyPageController {
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
     public List<QuoteResource> getLikedQuotes(@PathVariable("userId") Long userId){
-        return quoteSearchService.getLikedQuotes(userId)
+        return quoteService.getLikedQuotes(userId)
             .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList());
     }
 
@@ -53,7 +53,7 @@ public class MyPageController {
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
     public List<QuoteResource> getScrapedQuotes(@PathVariable("userId") Long userId){
-        return quoteSearchService.getScrapedQuotes(userId)
+        return quoteService.getScrapedQuotes(userId)
             .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList());
     }
 }

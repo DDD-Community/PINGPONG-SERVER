@@ -1,9 +1,11 @@
 package com.pingpong.quoteBakery.app.service;
 
+import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import java.util.List;
 
-public interface QuoteSearchService {
+public interface QuoteService {
     /**
      * 사용자 취향에 맞춘 랜덤 명언조회
      * DELEGATE ONLY
@@ -22,5 +24,18 @@ public interface QuoteSearchService {
     List<QuoteDto> getLikedQuotes(Long userId);
 
     List<QuoteDto> getScrapedQuotes(Long userId);
+
+
+    /**
+     * @param likeDto
+     * @return
+     */
+    Long saveLike(LikeDto likeDto);
+
+    /**
+     * @param scrapDto
+     * @return
+     */
+    Long saveScrap(ScrapDto scrapDto);
 }
 

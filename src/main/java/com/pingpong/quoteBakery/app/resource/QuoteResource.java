@@ -1,11 +1,14 @@
 package com.pingpong.quoteBakery.app.resource;
 
+import com.pingpong.quoteBakery.com.resource.BaseResource;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
-public class QuoteResource {
+@Getter
+@Setter
+public class QuoteResource extends BaseResource {
     @Schema(description = "명언ID")
     private Long quoteId;
 

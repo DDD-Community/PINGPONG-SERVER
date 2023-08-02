@@ -1,10 +1,12 @@
 package com.pingpong.quoteBakery.app.resource;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 public class QuoteSearchResource {
     @Schema(description = "사용자ID")
     private Long userId;

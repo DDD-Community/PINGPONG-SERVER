@@ -1,10 +1,13 @@
 package com.pingpong.quoteBakery.app.dto;
 
-import lombok.Data;
+import com.pingpong.quoteBakery.com.dto.BaseDto;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
-public class UserPrefDto {
+@Getter
+@Setter
+public class UserPrefDto extends BaseDto {
     private Long userPrefId;
 
     private String flavor;

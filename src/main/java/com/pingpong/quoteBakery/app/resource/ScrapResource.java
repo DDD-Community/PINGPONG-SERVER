@@ -8,13 +8,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserPrefCreateResource extends BaseResource {
+public class ScrapResource extends BaseResource {
     @Schema(description = "사용자ID")
     private Long userId;
-    @Schema(description = "맛")
-    private String flavor;
 
-    @Schema(description = "출처")
-    private String source;
+    @Schema(description = "명언ID")
+    private Long quoteId;
 }
+
 

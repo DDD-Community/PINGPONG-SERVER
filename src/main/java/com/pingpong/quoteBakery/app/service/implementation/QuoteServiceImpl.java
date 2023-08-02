@@ -1,13 +1,21 @@
 package com.pingpong.quoteBakery.app.service.implementation;
 
+import com.pingpong.quoteBakery.app.domain.Like;
+import com.pingpong.quoteBakery.app.domain.Quote;
+import com.pingpong.quoteBakery.app.domain.Scrap;
+import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.persistence.LikeRepository;
 import com.pingpong.quoteBakery.app.persistence.QuoteRepository;
 import com.pingpong.quoteBakery.app.persistence.ScrapRepository;
 import com.pingpong.quoteBakery.app.resource.QuoteConverter;
-import com.pingpong.quoteBakery.app.service.QuoteSearchService;
+import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
+import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
+import com.pingpong.quoteBakery.sys.domain.User;
+import com.pingpong.quoteBakery.sys.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class QuoteSearchServiceImpl implements QuoteSearchService {
+public class QuoteServiceImpl implements QuoteService {
     private final UserPrefService userPrefService;
+    private final UserService userService;
     private final QuoteRepository quoteRepository;
     private final LikeRepository likeRepository;
     private final ScrapRepository scrapRepository;
@@ -57,6 +66,26 @@ public class QuoteSearchServiceImpl implements QuoteSearchService {
             .stream().map(entity ->
                 quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public Long saveLike(LikeDto likeDto) {
+        User user = userService.findById(likeDto.getUserId());
+        Quote quote = quoteRepository.findById(likeDto.getQuoteId())
+            .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+
+        return likeRepository.save(Like.toEntity(user, quote)).getLikeId();
+    }
+
+    @Override
+    @Transactional
+    public Long saveScrap(ScrapDto scrapDto) {
+        User user = userService.findById(scrapDto.getUserId());
+        Quote quote = quoteRepository.findById(scrapDto.getQuoteId())
+            .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+
+        return scrapRepository.save(Scrap.toEntity(user, quote)).getScrapId();
     }
 
 

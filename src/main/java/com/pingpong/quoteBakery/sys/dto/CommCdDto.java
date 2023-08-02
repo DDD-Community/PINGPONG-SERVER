@@ -1,9 +1,11 @@
 package com.pingpong.quoteBakery.sys.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 public class CommCdDto {
     private Long commCdId;
     private String commCd;

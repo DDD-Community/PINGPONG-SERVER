@@ -1,12 +1,13 @@
 package com.pingpong.quoteBakery.sys.resource;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 public class CommCdTpResource {
 
     @Schema(description = "공통코드유형코드ID")
