@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +22,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "scraps")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Scrap extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
@@ -34,4 +38,11 @@ public class Scrap extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "quote_id")
     private Quote quote;
+
+    public static Scrap toEntity(User user, Quote quote){
+        return Scrap.builder()
+            .user(user)
+            .quote(quote)
+            .build();
+    }
 }

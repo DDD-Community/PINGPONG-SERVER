@@ -1,11 +1,14 @@
 package com.pingpong.quoteBakery.app.controller;
 
+import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.ScrapDto;
+import com.pingpong.quoteBakery.app.resource.LikeResource;
 import com.pingpong.quoteBakery.app.resource.QuoteConverter;
 import com.pingpong.quoteBakery.app.resource.QuoteSearchResource;
 import com.pingpong.quoteBakery.app.resource.RandomQuoteResource;
-import com.pingpong.quoteBakery.app.service.QuoteSearchService;
-import com.pingpong.quoteBakery.sys.resource.CommCdConverter;
+import com.pingpong.quoteBakery.app.resource.ScrapResource;
+import com.pingpong.quoteBakery.app.service.QuoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RequestMapping("/home")
 public class HomeController {
-    private final QuoteSearchService quoteSearchService;
+    private final QuoteService quoteService;
     private final QuoteConverter quoteConverter;
 
     /**
@@ -38,7 +42,7 @@ public class HomeController {
     )
     public RandomQuoteResource getRandomQuoteByUserId(@PathVariable("userId") Long userId){
 
-        return quoteConverter.convertDtoToRandomResource(quoteSearchService.getRandomQuoteByUser(userId));
+        return quoteConverter.convertDtoToRandomResource(quoteService.getRandomQuoteByUser(userId));
     }
 
     /**
@@ -51,7 +55,30 @@ public class HomeController {
     )
     public RandomQuoteResource bakeRandomQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody QuoteSearchResource searchResource){
 
-        return quoteConverter.convertDtoToRandomResource(quoteSearchService.getRandomQuote(quoteConverter.convertToGeneric(searchResource, QuoteDto.class)));
+        return quoteConverter.convertDtoToRandomResource(
+            quoteService.getRandomQuote(quoteConverter.convertToGeneric(searchResource, QuoteDto.class)));
     }
 
+    /**
+     * 명언 좋아요
+     */
+    @PostMapping("/like")
+    @Operation(summary = "명언 좋아요", description  = "명언 좋아요",
+        responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "좋아요ID")))}
+    )
+    public Long likeQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody LikeResource createResource){
+        return quoteService.saveLike(quoteConverter.convertToGeneric(createResource, LikeDto.class));
+    }
+
+    /**
+     * 명언 보관
+     */
+    @PostMapping("/scrap")
+    @Operation(summary = "명언 스크랩", description  = "명언 스크랩",
+        responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "스크랩ID")))}
+    )
+    public Long scrapQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody ScrapResource createResource){
+        return quoteService.saveScrap(quoteConverter.convertToGeneric(createResource, ScrapDto.class));
+    }
 }
+

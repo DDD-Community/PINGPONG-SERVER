@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +22,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Table(name = "likes")
 public class Like extends BaseEntity {
     @Id
@@ -34,4 +38,11 @@ public class Like extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "quote_id")
     private Quote quote;
+
+    public static Like toEntity(User user, Quote quote){
+        return Like.builder()
+            .user(user)
+            .quote(quote)
+            .build();
+    }
 }
