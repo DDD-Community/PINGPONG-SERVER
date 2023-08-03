@@ -5,10 +5,10 @@
 package com.pingpong.quoteBakery.app.persistence.implementation;
 
 import static com.pingpong.quoteBakery.app.domain.QQuote.quote;
-import static com.querydsl.core.types.ExpressionUtils.orderBy;
 
 import com.pingpong.quoteBakery.app.domain.Quote;
-import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.persistence.QuoteRepositoryCustom;
 import com.pingpong.quoteBakery.com.entity.QueryDslSupport;
 import com.querydsl.core.BooleanBuilder;
@@ -27,7 +27,23 @@ public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteReposit
         super(Quote.class);
     }
 
-    private BooleanBuilder makeBlnBldr(QuoteDto searchDto) {
+    private BooleanBuilder makeBlnBldrSingle(QuoteSingleSearchDto searchDto) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (searchDto.getSource() != null && !searchDto.getSource().isEmpty()) {
+            builder.and(quote.source.eq(searchDto.getSource()));
+        }
+        if (searchDto.getFlavor() != null && !searchDto.getFlavor().isEmpty()) {
+            builder.and(quote.flavor.eq(searchDto.getFlavor()));
+        }
+        if (searchDto.getMood() != null && !searchDto.getMood().isEmpty()) {
+            builder.and(quote.mood.eq(searchDto.getMood()));
+        }
+
+        return builder;
+    }
+
+    private BooleanBuilder makeBlnBldrMulti(QuoteMultiSearchDto searchDto) {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (searchDto.getSources() != null && !searchDto.getSources().isEmpty()) {
@@ -49,15 +65,22 @@ public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteReposit
     }
 
     @Override
-    public Quote searchQuote(QuoteDto searchDto) {
-        BooleanBuilder builder = this.makeBlnBldr(searchDto);
+    public Quote searchQuoteWithMulti(QuoteMultiSearchDto searchDto) {
+        return makeRandomSearchQuote(this.makeBlnBldrMulti(searchDto));
+    }
 
+    @Override
+    public Quote searchQuoteWithSingle(QuoteSingleSearchDto searchDto) {
+        return makeRandomSearchQuote(this.makeBlnBldrSingle(searchDto));
+    }
+
+    private Quote makeRandomSearchQuote(BooleanBuilder builder){
         return getQueryFactory().selectFrom(quote).where(builder).orderBy(NumberExpression.random().asc()).fetchFirst();
     }
 
     @Override
-    public List<Quote> searchQutes(QuoteDto searchDto) {
-        BooleanBuilder builder = this.makeBlnBldr(searchDto);
+    public List<Quote> searchQutes(QuoteMultiSearchDto searchDto) {
+        BooleanBuilder builder = this.makeBlnBldrMulti(searchDto);
 
         return getQueryFactory().selectFrom(quote)
             .where(builder)

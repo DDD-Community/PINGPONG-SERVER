@@ -1,12 +1,12 @@
 package com.pingpong.quoteBakery.app.controller;
 
 import com.pingpong.quoteBakery.app.dto.LikeDto;
-import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import com.pingpong.quoteBakery.app.resource.LikeResource;
 import com.pingpong.quoteBakery.app.resource.QuoteConverter;
-import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchResource;
 import com.pingpong.quoteBakery.app.resource.RandomQuoteResource;
+import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchResource;
 import com.pingpong.quoteBakery.app.resource.ScrapResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,7 +56,7 @@ public class HomeController {
     public RandomQuoteResource bakeRandomQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody RandomQuoteSearchResource searchResource){
 
         return quoteConverter.convertDtoToRandomResource(
-            quoteService.getRandomQuote(quoteConverter.convertToGeneric(searchResource, QuoteDto.class)));
+            quoteService.getRandomQuoteWithSingle(quoteConverter.convertToGeneric(searchResource, QuoteSingleSearchDto.class)));
     }
 
     /**

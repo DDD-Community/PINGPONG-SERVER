@@ -1,7 +1,6 @@
 package com.pingpong.quoteBakery.app.controller;
 
-import com.pingpong.quoteBakery.app.dto.QuoteDto;
-import com.pingpong.quoteBakery.app.resource.LikeResource;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
 import com.pingpong.quoteBakery.app.resource.QuoteConverter;
 import com.pingpong.quoteBakery.app.resource.QuoteResource;
 import com.pingpong.quoteBakery.app.resource.QuoteSearchResource;
@@ -40,7 +39,7 @@ public class SearchController {
     )
     public List<QuoteResource> searchQuotes(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody QuoteSearchResource searchResource){
 
-        return quoteService.searchQuotes(quoteConverter.convertToGeneric(searchResource, QuoteDto.class))
+        return quoteService.searchQuotes(quoteConverter.convertToGeneric(searchResource, QuoteMultiSearchDto.class))
             .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class))
             .collect(Collectors.toList());
     }

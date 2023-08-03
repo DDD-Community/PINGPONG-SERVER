@@ -26,14 +26,7 @@ public class QuoteDto extends BaseDto {
 
     private List<ScrapDto> scraps = new ArrayList<>();
 
-    // search
-    private String keyword;
+    // quoteConverter likes/scraps 변환용
     private Long userId;
-    private String orderBy;
-    private List<String> flavors;
-
-    private List<String> sources;
-
-    private List<String> moods;
 }
 

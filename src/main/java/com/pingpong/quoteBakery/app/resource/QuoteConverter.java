@@ -5,6 +5,7 @@ import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.domain.Scrap;
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import java.util.ArrayList;
@@ -69,9 +70,9 @@ public class QuoteConverter extends CommonConverter {
         return quoteDto;
     }
 
-    public QuoteDto convertSearchResourceToDto(QuoteSearchResource searchResource){
+    public QuoteMultiSearchDto convertSearchResourceToDto(QuoteSearchResource searchResource){
         if(searchResource == null) return null;
-        QuoteDto dto  = convertToGeneric(searchResource, QuoteDto.class);
+        QuoteMultiSearchDto dto  = convertToGeneric(searchResource, QuoteMultiSearchDto.class);
 
         // Deep copy the List
         if(searchResource.getFlavors() != null){

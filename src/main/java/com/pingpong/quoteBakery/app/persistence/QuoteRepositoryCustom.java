@@ -5,10 +5,18 @@
 package com.pingpong.quoteBakery.app.persistence;
 
 import com.pingpong.quoteBakery.app.domain.Quote;
-import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import java.util.List;
 
 public interface QuoteRepositoryCustom {
-    Quote searchQuote(QuoteDto searchDto);
-    List<Quote> searchQutes(QuoteDto searchDto);
+    /*
+     * 맛,출처,상황 조건을 각 단일개만 가질 수 있는 조회 건
+     * */
+    Quote searchQuoteWithSingle(QuoteSingleSearchDto searchDto);
+    /*
+     * 맛,출처,상황 조건을 각각 여러개 가질 수 있는 조회 건
+     * */
+    Quote searchQuoteWithMulti(QuoteMultiSearchDto searchDto);
+    List<Quote> searchQutes(QuoteMultiSearchDto searchDto);
 }

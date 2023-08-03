@@ -5,6 +5,8 @@ import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.domain.Scrap;
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.persistence.LikeRepository;
@@ -38,16 +40,27 @@ public class QuoteServiceImpl implements QuoteService {
     @Override
     public QuoteDto getRandomQuoteByUser(Long userId) {
         UserPrefDto userPrefDto = userPrefService.getUserPrefByUserId(userId);
-        QuoteDto searchDto = quoteConverter.convertToGeneric(userPrefDto, QuoteDto.class);
+        QuoteMultiSearchDto searchDto = quoteConverter.convertToGeneric(userPrefDto, QuoteMultiSearchDto.class);
 
-        return this.getRandomQuote(searchDto);
+        return this.getRandomQuoteWithMulti(searchDto);
     }
 
     @Override
-    public QuoteDto getRandomQuote(QuoteDto searchDto) {
-        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuote(searchDto));
-        quoteDto.setUserId(searchDto.getUserId()); // resource converter에서 좋아요/보관여부 세팅시에 필요
+    public QuoteDto getRandomQuoteWithMulti(QuoteMultiSearchDto searchDto) {
+        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithMulti(searchDto));
 
+        // resource converter에서 좋아요/보관여부 세팅시에 필요
+        if(quoteDto != null) quoteDto.setUserId(searchDto.getUserId());
+        return quoteDto;
+    }
+
+
+    @Override
+    public QuoteDto getRandomQuoteWithSingle(QuoteSingleSearchDto searchDto) {
+        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithSingle(searchDto));
+
+        // resource converter에서 좋아요/보관여부 세팅시에 필요
+        if(quoteDto != null) quoteDto.setUserId(searchDto.getUserId());
         return quoteDto;
     }
 
@@ -69,7 +82,7 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
-    public List<QuoteDto> searchQuotes(QuoteDto searchDto) {
+    public List<QuoteDto> searchQuotes(QuoteMultiSearchDto searchDto) {
         return quoteRepository.searchQutes(searchDto).stream().map(quoteConverter::convertEntityToDto).collect(Collectors.toList());
     }
 

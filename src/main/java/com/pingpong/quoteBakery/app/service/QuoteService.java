@@ -2,6 +2,8 @@ package com.pingpong.quoteBakery.app.service;
 
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import java.util.List;
 
@@ -15,17 +17,25 @@ public interface QuoteService {
     QuoteDto getRandomQuoteByUser(Long userId);
 
     /**
-     * 조건에 맞는 랜덤 명언 조회
+     * 맛,출처,상황을 각각 여러개 갖는 조건에 맞는 랜덤 명언 조회
      * @param searchDto 
      * @return
      */
-    QuoteDto getRandomQuote(QuoteDto searchDto);
+    QuoteDto getRandomQuoteWithMulti(QuoteMultiSearchDto searchDto);
+
+    /**
+     * 맛,출처,상황을 각 단 한개만 갖는 조건에 맞는 랜덤 명언 조회
+     * @param searchDto
+     * @return
+     */
+    QuoteDto getRandomQuoteWithSingle(QuoteSingleSearchDto searchDto);
+    
 
     List<QuoteDto> getLikedQuotes(Long userId);
 
     List<QuoteDto> getScrapedQuotes(Long userId);
 
-    List<QuoteDto> searchQuotes(QuoteDto searchDto);
+    List<QuoteDto> searchQuotes(QuoteMultiSearchDto searchDto);
 
     /**
      * @param likeDto
