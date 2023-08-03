@@ -5,6 +5,8 @@ import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.domain.Scrap;
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.persistence.LikeRepository;
@@ -20,6 +22,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,18 +41,30 @@ public class QuoteServiceImpl implements QuoteService {
     private final QuoteConverter quoteConverter;
 
     @Override
-    public QuoteDto getRandomQuoteByUser(Long userId) {
+    public Page<QuoteDto> searchRandomQuotesByUser(Long userId, Pageable pageable) {
         UserPrefDto userPrefDto = userPrefService.getUserPrefByUserId(userId);
-        QuoteDto searchDto = quoteConverter.convertToGeneric(userPrefDto, QuoteDto.class);
+        QuoteMultiSearchDto searchDto = quoteConverter.convertToGeneric(userPrefDto, QuoteMultiSearchDto.class);
+        List<QuoteDto> quoteDtos = this.searchQuotes(searchDto);
 
-        return this.getRandomQuote(searchDto);
+        return new PageImpl<>(quoteDtos, pageable, quoteDtos.size());
     }
 
     @Override
-    public QuoteDto getRandomQuote(QuoteDto searchDto) {
-        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuote(searchDto));
-        quoteDto.setUserId(searchDto.getUserId()); // resource converter에서 좋아요/보관여부 세팅시에 필요
+    public QuoteDto getRandomQuoteWithMulti(QuoteMultiSearchDto searchDto) {
+        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithMulti(searchDto));
 
+        // resource converter에서 좋아요/보관여부 세팅시에 필요
+        if(quoteDto != null) quoteDto.setUserId(searchDto.getUserId());
+        return quoteDto;
+    }
+
+
+    @Override
+    public QuoteDto getRandomQuoteWithSingle(QuoteSingleSearchDto searchDto) {
+        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithSingle(searchDto));
+
+        // resource converter에서 좋아요/보관여부 세팅시에 필요
+        if(quoteDto != null) quoteDto.setUserId(searchDto.getUserId());
         return quoteDto;
     }
 
@@ -66,6 +83,17 @@ public class QuoteServiceImpl implements QuoteService {
             .stream().map(entity ->
                 quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class))
             .collect(Collectors.toList());
+    }
+
+    private List<QuoteDto> searchQuotes(QuoteMultiSearchDto searchDto) {
+        return quoteRepository.searchQuotes(searchDto).stream().map(quoteConverter::convertEntityToDto).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public Page<QuoteDto> searchQuotePages(QuoteMultiSearchDto searchDto, Pageable pageable) {
+        List<QuoteDto> quoteDtos = this.searchQuotes(searchDto);
+        return new PageImpl<>(quoteDtos, pageable, quoteDtos.size());
     }
 
     @Override

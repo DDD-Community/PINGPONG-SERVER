@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -41,7 +41,7 @@ public class UserPreference extends BaseEntity {
     @Column(name = "source", length = 100) // 명언 출처
     private String source;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id") // 사용자ID
     private User user;
 

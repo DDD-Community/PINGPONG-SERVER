@@ -2,39 +2,51 @@ package com.pingpong.quoteBakery.app.service;
 
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface QuoteService {
     /**
      * 사용자 취향에 맞춘 랜덤 명언조회
-     * DELEGATE ONLY
-     * @param userId
-     * @return
+     * @param userId, pageable
+     * @return QuoteDto
      */
-    QuoteDto getRandomQuoteByUser(Long userId);
+    Page<QuoteDto> searchRandomQuotesByUser(Long userId, Pageable pageable);
 
     /**
-     * 조건에 맞는 랜덤 명언 조회
+     * 맛,출처,상황을 각각 여러개 갖는 조건에 맞는 랜덤 명언 조회
      * @param searchDto 
-     * @return
+     * @return QuoteDto
      */
-    QuoteDto getRandomQuote(QuoteDto searchDto);
+    QuoteDto getRandomQuoteWithMulti(QuoteMultiSearchDto searchDto);
+
+    /**
+     * 맛,출처,상황을 각 단 한개만 갖는 조건에 맞는 랜덤 명언 조회
+     * @param searchDto
+     * @return QuoteDto
+     */
+    QuoteDto getRandomQuoteWithSingle(QuoteSingleSearchDto searchDto);
+    
 
     List<QuoteDto> getLikedQuotes(Long userId);
 
     List<QuoteDto> getScrapedQuotes(Long userId);
 
+    Page<QuoteDto> searchQuotePages(QuoteMultiSearchDto searchDto, Pageable pageable);
 
     /**
      * @param likeDto
-     * @return
+     * @return likeId
      */
     Long saveLike(LikeDto likeDto);
 
     /**
      * @param scrapDto
-     * @return
+     * @return scrapId
      */
     Long saveScrap(ScrapDto scrapDto);
 }

@@ -9,9 +9,9 @@ import org.springframework.data.domain.PageRequest;
 @Getter
 @Setter
 public class PageResource {
-    @Schema(description = "page")
+    @Schema(description = "현재페이지")
     private Integer page;
-    @Schema(description = "sizePerPage")
+    @Schema(description = "페이지별 조회할 데이터 건수")
     private Integer sizePerPage;
 
     /**
@@ -21,10 +21,8 @@ public class PageResource {
      */
     @Hidden // Hide this operation from Swagger UI
     public PageRequest getPageInfo() {
-        if (this.getPage() == null && this.getSizePerPage() == null) {
-            this.setPage(0);
-            this.setSizePerPage(10);
-        }
+        if (this.getPage() == null) { this.setPage(1); }
+        if (this.getSizePerPage() == null){ this.setSizePerPage(10); }
 
         return PageRequest.of(this.getPage(), this.getSizePerPage());
     }

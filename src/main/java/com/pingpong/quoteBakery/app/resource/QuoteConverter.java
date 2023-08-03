@@ -5,8 +5,10 @@ import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.domain.Scrap;
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +46,46 @@ public class QuoteConverter extends CommonConverter {
 
         List<Like> likes = quote.getLikes();
         List<Scrap> scraps = quote.getScraps();
-        if(likes != null){ quoteDto.setLikes(likes.stream().map(entity -> this.convertToGeneric(entity, LikeDto.class)).collect(Collectors.toList())); }
-        if(scraps != null){ quoteDto.setScraps(scraps.stream().map(entity -> this.convertToGeneric(entity, ScrapDto.class)).collect(Collectors.toList())); }
+        if(likes != null){
+            quoteDto.setLikes(likes.stream().map(entity -> {
+                LikeDto likeDto = new LikeDto();
+                likeDto.setLikeId(entity.getLikeId());
+                likeDto.setUserId(entity.getUser().getId());
+                likeDto.setQuoteId(entity.getQuote().getQuoteId());
+                return likeDto;
+            })
+            .collect(Collectors.toList()));
+        }
+        if(scraps != null){
+            quoteDto.setScraps(scraps.stream().map(entity -> {
+                ScrapDto scrapDto = new ScrapDto();
+                scrapDto.setScrapId(entity.getScrapId());
+                scrapDto.setUserId(entity.getUser().getId());
+                scrapDto.setQuoteId(entity.getQuote().getQuoteId());
+                return scrapDto;
+            })
+            .collect(Collectors.toList()));
+        }
 
         return quoteDto;
     }
+
+    public QuoteMultiSearchDto convertSearchResourceToDto(QuoteSearchResource searchResource){
+        if(searchResource == null) return null;
+        QuoteMultiSearchDto dto  = convertToGeneric(searchResource, QuoteMultiSearchDto.class);
+
+        // Deep copy the List
+        if(searchResource.getFlavors() != null){
+            dto.setFlavors(new ArrayList<>(searchResource.getFlavors()));
+        }
+        if(searchResource.getSources() != null){
+            dto.setSources(new ArrayList<>(searchResource.getSources()));
+        }
+        if(searchResource.getMoods() != null){
+            dto.setMoods(new ArrayList<>(searchResource.getMoods()));
+        }
+
+        return dto;
+    }
+
 }

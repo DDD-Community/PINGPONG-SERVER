@@ -7,12 +7,18 @@ package com.pingpong.quoteBakery.app.persistence.implementation;
 import static com.pingpong.quoteBakery.app.domain.QQuote.quote;
 
 import com.pingpong.quoteBakery.app.domain.Quote;
-import com.pingpong.quoteBakery.app.dto.QuoteDto;
+import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
+import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.persistence.QuoteRepositoryCustom;
 import com.pingpong.quoteBakery.com.entity.QueryDslSupport;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.StringPath;
 import io.micrometer.common.util.StringUtils;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,29 +27,69 @@ public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteReposit
         super(Quote.class);
     }
 
-    private BooleanBuilder makeBlnBldr(QuoteDto searchDto) {
+    private BooleanBuilder makeBlnBldrSingle(QuoteSingleSearchDto searchDto) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (searchDto.getSource() != null) {
+        if (searchDto.getSource() != null && !searchDto.getSource().isEmpty()) {
             builder.and(quote.source.eq(searchDto.getSource()));
         }
-        if (searchDto.getFlavor() != null) {
+        if (searchDto.getFlavor() != null && !searchDto.getFlavor().isEmpty()) {
             builder.and(quote.flavor.eq(searchDto.getFlavor()));
         }
-        if (searchDto.getMood() != null) {
+        if (searchDto.getMood() != null && !searchDto.getMood().isEmpty()) {
             builder.and(quote.mood.eq(searchDto.getMood()));
         }
+
+        return builder;
+    }
+
+    private BooleanBuilder makeBlnBldrMulti(QuoteMultiSearchDto searchDto) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (searchDto.getSources() != null && !searchDto.getSources().isEmpty()) {
+            builder.and(quote.source.in(searchDto.getSources()));
+        }
+        if (searchDto.getFlavors() != null && !searchDto.getFlavors().isEmpty()) {
+            builder.and(quote.flavor.in(searchDto.getFlavors()));
+        }
+        if (searchDto.getMoods() != null && !searchDto.getMoods().isEmpty()) {
+            builder.and(quote.mood.in(searchDto.getMoods()));
+        }
         if (!StringUtils.isEmpty(searchDto.getKeyword())) {
-            builder.and(quote.content.like(searchDto.getKeyword()));
+            BooleanExpression keywordInContent = quote.content.containsIgnoreCase(searchDto.getKeyword());
+            BooleanExpression keywordInAuthor = quote.author.containsIgnoreCase(searchDto.getKeyword());
+            builder.and(keywordInContent.or(keywordInAuthor));
         }
 
         return builder;
     }
 
     @Override
-    public Quote searchQuote(QuoteDto searchDto) {
-        BooleanBuilder builder = this.makeBlnBldr(searchDto);
+    public Quote searchQuoteWithMulti(QuoteMultiSearchDto searchDto) {
+        return makeRandomSearchQuote(this.makeBlnBldrMulti(searchDto));
+    }
 
+    @Override
+    public Quote searchQuoteWithSingle(QuoteSingleSearchDto searchDto) {
+        return makeRandomSearchQuote(this.makeBlnBldrSingle(searchDto));
+    }
+
+    private Quote makeRandomSearchQuote(BooleanBuilder builder){
         return getQueryFactory().selectFrom(quote).where(builder).orderBy(NumberExpression.random().asc()).fetchFirst();
+    }
+
+    @Override
+    public List<Quote> searchQuotes(QuoteMultiSearchDto searchDto) {
+        BooleanBuilder builder = this.makeBlnBldrMulti(searchDto);
+
+        return getQueryFactory().selectFrom(quote)
+            .where(builder)
+            .orderBy(createOrderSpecifier(quote.content, searchDto.getOrderBy()))
+            .fetch();
+    }
+
+    private OrderSpecifier<?> createOrderSpecifier(StringPath sortProperty, String orderBy) {
+        return "DESC".equalsIgnoreCase(orderBy) ?
+            new OrderSpecifier<>(Order.DESC, sortProperty) : new OrderSpecifier<>(Order.ASC, sortProperty);
     }
 }
