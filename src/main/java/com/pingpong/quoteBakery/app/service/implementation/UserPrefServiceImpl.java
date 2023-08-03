@@ -8,6 +8,7 @@ import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.persistence.UserPreferenceRepository;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
+import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
 import com.pingpong.quoteBakery.sys.domain.User;
 import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
 import com.pingpong.quoteBakery.sys.service.CommCdTpService;
@@ -42,12 +43,27 @@ public class UserPrefServiceImpl implements UserPrefService {
 
     @Override
     @Transactional
-    public Long saveUserPref(UserPrefDto userPrefDto) {
+    public Long createUserPref(UserPrefDto userPrefDto) {
         userPrefDto.setFlavor(convertListToString(",", userPrefDto.getFlavors()));
         userPrefDto.setSource(convertListToString(",", userPrefDto.getSources()));
 
         User user = userService.findById(userPrefDto.getUserId());
         return userPreferenceRepository.save(UserPreference.toEntity(userPrefDto, user)).getUserPrefId();
+    }
+
+    @Override
+    @Transactional
+    public Long updateUserPref(UserPrefDto userPrefDto) {
+        UserPreference userPreference = userPreferenceRepository.findById(userPrefDto.getUserPrefId())
+            .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+
+        // convert List to String for storing in DB
+        userPrefDto.setFlavor(convertListToString(",", userPrefDto.getFlavors()));
+        userPrefDto.setSource(convertListToString(",", userPrefDto.getSources()));
+
+        userPreference.update(userPrefDto);
+
+        return userPreference.getUserPrefId();
     }
 
     @Override
