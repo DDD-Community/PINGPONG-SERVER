@@ -18,5 +18,5 @@ public interface QuoteRepositoryCustom {
      * 맛,출처,상황 조건을 각각 여러개 가질 수 있는 조회 건
      * */
     Quote searchQuoteWithMulti(QuoteMultiSearchDto searchDto);
-    List<Quote> searchQutes(QuoteMultiSearchDto searchDto);
+    List<Quote> searchQuotes(QuoteMultiSearchDto searchDto);
 }

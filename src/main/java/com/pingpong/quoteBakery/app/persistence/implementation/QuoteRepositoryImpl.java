@@ -79,7 +79,7 @@ public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteReposit
     }
 
     @Override
-    public List<Quote> searchQutes(QuoteMultiSearchDto searchDto) {
+    public List<Quote> searchQuotes(QuoteMultiSearchDto searchDto) {
         BooleanBuilder builder = this.makeBlnBldrMulti(searchDto);
 
         return getQueryFactory().selectFrom(quote)

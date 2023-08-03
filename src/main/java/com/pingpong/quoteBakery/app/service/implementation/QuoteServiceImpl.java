@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,11 +41,12 @@ public class QuoteServiceImpl implements QuoteService {
     private final QuoteConverter quoteConverter;
 
     @Override
-    public QuoteDto getRandomQuoteByUser(Long userId) {
+    public Page<QuoteDto> searchRandomQuotesByUser(Long userId, Pageable pageable) {
         UserPrefDto userPrefDto = userPrefService.getUserPrefByUserId(userId);
         QuoteMultiSearchDto searchDto = quoteConverter.convertToGeneric(userPrefDto, QuoteMultiSearchDto.class);
+        List<QuoteDto> quoteDtos = this.searchQuotes(searchDto);
 
-        return this.getRandomQuoteWithMulti(searchDto);
+        return new PageImpl<>(quoteDtos, pageable, quoteDtos.size());
     }
 
     @Override
@@ -81,9 +85,15 @@ public class QuoteServiceImpl implements QuoteService {
             .collect(Collectors.toList());
     }
 
+    private List<QuoteDto> searchQuotes(QuoteMultiSearchDto searchDto) {
+        return quoteRepository.searchQuotes(searchDto).stream().map(quoteConverter::convertEntityToDto).collect(Collectors.toList());
+    }
+
+
     @Override
-    public List<QuoteDto> searchQuotes(QuoteMultiSearchDto searchDto) {
-        return quoteRepository.searchQutes(searchDto).stream().map(quoteConverter::convertEntityToDto).collect(Collectors.toList());
+    public Page<QuoteDto> searchQuotePages(QuoteMultiSearchDto searchDto, Pageable pageable) {
+        List<QuoteDto> quoteDtos = this.searchQuotes(searchDto);
+        return new PageImpl<>(quoteDtos, pageable, quoteDtos.size());
     }
 
     @Override

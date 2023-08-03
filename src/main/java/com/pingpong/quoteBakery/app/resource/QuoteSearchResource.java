@@ -1,5 +1,6 @@
 package com.pingpong.quoteBakery.app.resource;
 
+import com.pingpong.quoteBakery.com.resource.PageResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class QuoteSearchResource {
+public class QuoteSearchResource extends PageResource {
     @Schema(description = "키워드")
     private String keyword;
 
