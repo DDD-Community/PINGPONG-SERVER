@@ -3,6 +3,7 @@ package com.pingpong.quoteBakery.app.service;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserPrefService {
     /**
@@ -16,7 +17,10 @@ public interface UserPrefService {
      * @param userPrefDto
      * @return
      */
-    Long saveUserPref(UserPrefDto userPrefDto);
+    Long createUserPref(UserPrefDto userPrefDto);
+
+    @Transactional
+    Long updateUserPref(UserPrefDto userPrefDto);
 
     /**
      * @param userId

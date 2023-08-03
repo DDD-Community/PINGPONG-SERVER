@@ -56,6 +56,6 @@ public class  OnBoardController {
     public Long saveUserPref(@PathVariable("userId") Long userId,
         @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserPrefCreateResource createResource){
         createResource.setUserId(userId);
-        return userPrefService.saveUserPref(cdConverter.convertToGeneric(createResource, UserPrefDto.class));
+        return userPrefService.createUserPref(cdConverter.convertToGeneric(createResource, UserPrefDto.class));
     }
 }
