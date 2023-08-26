@@ -3,12 +3,7 @@ package com.pingpong.quoteBakery.app.controller;
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
 import com.pingpong.quoteBakery.app.dto.ScrapDto;
-import com.pingpong.quoteBakery.app.resource.LikeResource;
-import com.pingpong.quoteBakery.app.resource.QuoteConverter;
-import com.pingpong.quoteBakery.app.resource.RandomQuoteResource;
-import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchPageResource;
-import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchResource;
-import com.pingpong.quoteBakery.app.resource.ScrapResource;
+import com.pingpong.quoteBakery.app.resource.*;
 import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,13 +50,23 @@ public class HomeController {
      */
     @GetMapping("/bake-quote")
     @Operation(summary = "홈 화면 랜덤 명언 굽기",
-        description  = "홈 화면 랜덤 명언 굽기",
-        responses = { @ApiResponse(responseCode = "200", description = "굽기 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
+            description  = "홈 화면 랜덤 명언 굽기",
+            responses = { @ApiResponse(responseCode = "200", description = "굽기 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
     )
-    public ApiRes<RandomQuoteResource> bakeRandomQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody RandomQuoteSearchResource searchResource){
+    public ApiRes<RandomQuoteResource> bakeRandomQuote(
+            @Parameter(description = "사용자ID") @RequestParam(value="userId", required=false) Long userId,
+            @Parameter(description = "맛") @RequestParam(value="flavor", required=false) String flavor,
+            @Parameter(description = "출처") @RequestParam(value="source", required=false) String source,
+            @Parameter(description = "상황") @RequestParam(value="mood", required=false) String mood) {
+
+        RandomQuoteSearchResource searchResource = new RandomQuoteSearchResource();
+        searchResource.setUserId(userId);
+        searchResource.setFlavor(flavor);
+        searchResource.setSource(source);
+        searchResource.setMood(mood);
 
         return ApiRes.createSuccess(quoteConverter.convertDtoToRandomResource(
-            quoteService.getRandomQuoteWithSingle(quoteConverter.convertToGeneric(searchResource, QuoteSingleSearchDto.class))));
+                quoteService.getRandomQuoteWithSingle(quoteConverter.convertToGeneric(searchResource, QuoteSingleSearchDto.class))));
     }
 
     /**
