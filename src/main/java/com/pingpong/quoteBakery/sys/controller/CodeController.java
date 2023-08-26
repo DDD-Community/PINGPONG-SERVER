@@ -1,7 +1,6 @@
 package com.pingpong.quoteBakery.sys.controller;
 
-import com.pingpong.quoteBakery.com.converter.CommonConverter;
-import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
+import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.sys.resource.CommCdConverter;
 import com.pingpong.quoteBakery.sys.resource.CommCdTpResource;
 import com.pingpong.quoteBakery.sys.service.CommCdTpService;
@@ -38,7 +37,7 @@ public class CodeController {
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
     )
     @Parameter(name = "commCdTpCd", description = "공통코드유형코드", in = ParameterIn.PATH)
-    public CommCdTpResource getCommCdTpByCd(@PathVariable("commCdTpCd") String commCdTpCd){
-        return converter.convertDtoToResource(commCdTpService.getCommCdTpByCd(commCdTpCd));
+    public ApiRes<CommCdTpResource> getCommCdTpByCd(@PathVariable("commCdTpCd") String commCdTpCd){
+        return ApiRes.createSuccess(converter.convertDtoToResource(commCdTpService.getCommCdTpByCd(commCdTpCd)));
     }
 }

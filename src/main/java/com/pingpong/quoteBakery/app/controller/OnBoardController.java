@@ -3,6 +3,7 @@ package com.pingpong.quoteBakery.app.controller;
 import com.pingpong.quoteBakery.app.dto.UserPrefDto;
 import com.pingpong.quoteBakery.app.resource.UserPrefCreateResource;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
+import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.sys.resource.CommCdConverter;
 import com.pingpong.quoteBakery.sys.resource.CommCdTpResource;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,8 +42,8 @@ public class  OnBoardController {
             description  = "사용자 취향 관련한 명언 공통코드 맛/출처 조회",
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
     )
-    public List<CommCdTpResource> searchCommCds(){
-        return userPrefService.searchUserPrefCode().stream().map(cdConverter::convertDtoToResource).collect(Collectors.toList());
+    public ApiRes<List<CommCdTpResource>> searchCommCds(){
+        return ApiRes.createSuccess(userPrefService.searchUserPrefCode().stream().map(cdConverter::convertDtoToResource).collect(Collectors.toList()));
     }
 
     /**
@@ -53,9 +54,9 @@ public class  OnBoardController {
         responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "사용자취향ID")))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public Long saveUserPref(@PathVariable("userId") Long userId,
+    public ApiRes<Long> saveUserPref(@PathVariable("userId") Long userId,
         @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserPrefCreateResource createResource){
         createResource.setUserId(userId);
-        return userPrefService.createUserPref(cdConverter.convertToGeneric(createResource, UserPrefDto.class));
+        return ApiRes.createSuccess(userPrefService.createUserPref(cdConverter.convertToGeneric(createResource, UserPrefDto.class)));
     }
 }

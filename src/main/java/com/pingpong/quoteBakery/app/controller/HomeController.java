@@ -10,6 +10,7 @@ import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchPageResource;
 import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchResource;
 import com.pingpong.quoteBakery.app.resource.ScrapResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
+import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,10 +42,10 @@ public class HomeController {
             description  = "홈 화면 랜덤 명언 목록 조회",
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
     )
-    public Page<RandomQuoteResource> getRandomQuoteByUserId(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody RandomQuoteSearchPageResource searchPageResource){
+    public ApiRes<Page<RandomQuoteResource>> getRandomQuoteByUserId(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody RandomQuoteSearchPageResource searchPageResource){
 
-        return quoteService.searchRandomQuotesByUser(searchPageResource.getUserId(), searchPageResource.getPageInfo())
-                .map(quoteConverter::convertDtoToRandomResource);
+        return ApiRes.createSuccess(quoteService.searchRandomQuotesByUser(searchPageResource.getUserId(), searchPageResource.getPageInfo())
+                .map(quoteConverter::convertDtoToRandomResource));
     }
 
     /**
@@ -55,10 +56,10 @@ public class HomeController {
         description  = "홈 화면 랜덤 명언 굽기",
         responses = { @ApiResponse(responseCode = "200", description = "굽기 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
     )
-    public RandomQuoteResource bakeRandomQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody RandomQuoteSearchResource searchResource){
+    public ApiRes<RandomQuoteResource> bakeRandomQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody RandomQuoteSearchResource searchResource){
 
-        return quoteConverter.convertDtoToRandomResource(
-            quoteService.getRandomQuoteWithSingle(quoteConverter.convertToGeneric(searchResource, QuoteSingleSearchDto.class)));
+        return ApiRes.createSuccess(quoteConverter.convertDtoToRandomResource(
+            quoteService.getRandomQuoteWithSingle(quoteConverter.convertToGeneric(searchResource, QuoteSingleSearchDto.class))));
     }
 
     /**
@@ -68,8 +69,8 @@ public class HomeController {
     @Operation(summary = "명언 좋아요", description  = "명언 좋아요",
         responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "좋아요ID")))}
     )
-    public Long likeQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody LikeResource createResource){
-        return quoteService.saveLike(quoteConverter.convertToGeneric(createResource, LikeDto.class));
+    public ApiRes<Long> likeQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody LikeResource createResource){
+        return ApiRes.createSuccess(quoteService.saveLike(quoteConverter.convertToGeneric(createResource, LikeDto.class)));
     }
 
     /**
@@ -79,8 +80,8 @@ public class HomeController {
     @Operation(summary = "명언 스크랩", description  = "명언 스크랩",
         responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "스크랩ID")))}
     )
-    public Long scrapQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody ScrapResource createResource){
-        return quoteService.saveScrap(quoteConverter.convertToGeneric(createResource, ScrapDto.class));
+    public ApiRes<Long> scrapQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody ScrapResource createResource){
+        return ApiRes.createSuccess(quoteService.saveScrap(quoteConverter.convertToGeneric(createResource, ScrapDto.class)));
     }
 }
 

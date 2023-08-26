@@ -1,5 +1,6 @@
 package com.pingpong.quoteBakery.sys.controller;
 
+import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.sys.dto.AddUserRequestDto;
 import com.pingpong.quoteBakery.sys.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,8 +20,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public Long signup(@RequestBody AddUserRequestDto requestDto) {
-        return userService.save(requestDto);
+    public ApiRes<Long> signup(@RequestBody AddUserRequestDto requestDto) {
+        return ApiRes.createSuccess(userService.save(requestDto));
     }
 
     @GetMapping("/logout")

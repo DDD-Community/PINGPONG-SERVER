@@ -7,6 +7,7 @@ import com.pingpong.quoteBakery.app.resource.UserPrefResource;
 import com.pingpong.quoteBakery.app.resource.UserPrefUpdateResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
+import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.sys.resource.CommCdTpResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,9 +46,9 @@ public class MyPageController {
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public List<QuoteResource> getLikedQuotes(@PathVariable("userId") Long userId){
-        return quoteService.getLikedQuotes(userId)
-            .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList());
+    public ApiRes<List<QuoteResource>> getLikedQuotes(@PathVariable("userId") Long userId){
+        return ApiRes.createSuccess(quoteService.getLikedQuotes(userId)
+            .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList()));
     }
 
     /**
@@ -59,9 +60,9 @@ public class MyPageController {
         responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public List<QuoteResource> getScrapedQuotes(@PathVariable("userId") Long userId){
-        return quoteService.getScrapedQuotes(userId)
-            .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList());
+    public ApiRes<List<QuoteResource>> getScrapedQuotes(@PathVariable("userId") Long userId){
+        return ApiRes.createSuccess(quoteService.getScrapedQuotes(userId)
+            .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList()));
     }
 
     /**
@@ -73,8 +74,8 @@ public class MyPageController {
         responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = UserPrefResource.class)))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public UserPrefResource getUserPref(@PathVariable("userId") Long userId){
-        return quoteConverter.convertToGeneric(userPrefService.getUserPrefByUserId(userId), UserPrefResource.class);
+    public ApiRes<UserPrefResource> getUserPref(@PathVariable("userId") Long userId){
+        return ApiRes.createSuccess(quoteConverter.convertToGeneric(userPrefService.getUserPrefByUserId(userId), UserPrefResource.class));
     }
 
     /**
@@ -85,8 +86,8 @@ public class MyPageController {
         responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "사용자취향ID")))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public Long saveUserPref(@PathVariable("userId") Long userId,
+    public ApiRes<Long> saveUserPref(@PathVariable("userId") Long userId,
         @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserPrefUpdateResource updateResource){
-        return userPrefService.updateUserPref(quoteConverter.convertToGeneric(updateResource, UserPrefDto.class));
+        return ApiRes.createSuccess(userPrefService.updateUserPref(quoteConverter.convertToGeneric(updateResource, UserPrefDto.class)));
     }
 }

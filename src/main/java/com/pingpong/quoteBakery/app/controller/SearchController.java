@@ -6,6 +6,7 @@ import com.pingpong.quoteBakery.app.resource.QuoteResource;
 import com.pingpong.quoteBakery.app.resource.QuoteSearchResource;
 import com.pingpong.quoteBakery.app.resource.RandomQuoteResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
+import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,10 +37,10 @@ public class SearchController {
             description  = "조건에 맞게 명언을 탐색한다",
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
     )
-    public Page<QuoteResource> searchQuotes(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody QuoteSearchResource searchResource){
+    public ApiRes<Page<QuoteResource>> searchQuotes(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody QuoteSearchResource searchResource){
 
-        return quoteService.searchQuotePages(quoteConverter.convertToGeneric(searchResource, QuoteMultiSearchDto.class), searchResource.getPageInfo())
-            .map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class));
+        return ApiRes.createSuccess(quoteService.searchQuotePages(quoteConverter.convertToGeneric(searchResource, QuoteMultiSearchDto.class), searchResource.getPageInfo())
+            .map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)));
     }
 }
 
