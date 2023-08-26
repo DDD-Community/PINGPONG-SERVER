@@ -17,5 +17,8 @@ public class CommCdResource {
 
     @Schema(description = "공통코드명")
     private String commNm;
+
+    @Schema(description = "설명")
+    private String desc;
 }
 
