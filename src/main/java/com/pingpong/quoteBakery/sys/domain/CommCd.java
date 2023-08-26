@@ -34,9 +34,6 @@ public class CommCd extends BaseEntity {
     @Column(name = "commNm", length = 100) // 공통코드명
     private String commNm;
 
-    @Column(name = "desc", length = 100) // desc
-    private String desc;
-
     @ManyToOne
     @JoinColumn(name = "comm_cd_tp_id")
     private CommCdTp commCdTp;
