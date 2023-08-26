@@ -48,6 +48,11 @@ public class UserPrefServiceImpl implements UserPrefService {
         userPrefDto.setSource(convertListToString(",", userPrefDto.getSources()));
 
         User user = userService.findById(userPrefDto.getUserId());
+
+        // 이미 등록된 유저인지 확인
+        if(userPreferenceRepository.findByUser_Id(user.getId()) != null){
+            throw new BusinessInvalidValueException("이미 취향이 등록된 유저입니다.");
+        }
         return userPreferenceRepository.save(UserPreference.toEntity(userPrefDto, user)).getUserPrefId();
     }
 
