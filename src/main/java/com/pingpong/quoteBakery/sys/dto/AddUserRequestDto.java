@@ -8,5 +8,7 @@ import lombok.NoArgsConstructor;
 public class AddUserRequestDto {
     private String email;
     private String password;
-    private String auth;
+    private String nickName;
+    private String jobCd;
+    private String desc;
 }

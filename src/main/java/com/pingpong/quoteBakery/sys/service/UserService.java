@@ -17,14 +17,20 @@ public class UserService {
     public Long save(AddUserRequestDto userReqDto) {
         return userRepository.save(User.builder()
                 .email(userReqDto.getEmail())
-                .auth(userReqDto.getAuth())
                 .password(bCryptPasswordEncoder.encode(userReqDto.getPassword()))
+                .nickName(userReqDto.getNickName())
+                .desc(userReqDto.getDesc())
+                .jobCd(userReqDto.getJobCd())
                 .build()).getId();
     }
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    }
+
+    public boolean validateNickName(String nickName){
+        return userRepository.existsByNickName(nickName);
     }
 
 }

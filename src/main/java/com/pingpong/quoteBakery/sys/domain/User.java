@@ -37,6 +37,15 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "nickName", nullable = false, unique = true)
+    private String nickName;
+
+    @Column(name = "desc", nullable = false)
+    private String desc;
+
+    @Column(name = "jobCd", nullable = false)
+    private String jobCd;
+
     @OneToMany(mappedBy = "user")
     private List<Like> likes = new ArrayList<>();
 
@@ -44,9 +53,12 @@ public class User implements UserDetails {
     private List<Scrap> scraps = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String auth) {
+    public User(String email, String password, String nickName, String desc, String jobCd) {
         this.email = email;
         this.password = password;
+        this.nickName = nickName;
+        this.desc = desc;
+        this.jobCd = jobCd;
     }
 
 
