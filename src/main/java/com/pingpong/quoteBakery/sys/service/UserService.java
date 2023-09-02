@@ -18,7 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CommCdTpService commCdTpService;
 
-    public String saveByFireBase(FBUserRequestDto userReqDto) {
+    public Long saveByFireBase(FBUserRequestDto userReqDto) {
         String randRmk = makeRandomRmk();
 
         return userRepository.save(User.builder()
@@ -28,7 +28,7 @@ public class UserService {
                 .nickname(userReqDto.getNickname())
                 .jobCd(userReqDto.getJobCd())
                 .rmk(randRmk)
-                .build()).getUid();
+                .build()).getId();
     }
 
     private String makeRandomRmk() {

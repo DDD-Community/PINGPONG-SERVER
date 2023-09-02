@@ -16,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody FBUserRequestDto requestDto) {
+    public Long signup(@RequestBody FBUserRequestDto requestDto) {
         return userService.saveByFireBase(requestDto);
     }
 
