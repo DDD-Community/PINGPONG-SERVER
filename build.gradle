@@ -58,14 +58,13 @@ tasks.named('test') {
 
 task copyGitSubmodule(type: Copy) {
 	from './config/resources'
-	include '*.yml'
+	include '*.yml', '*.json'
 	into './src/main/resources'
 }
 
-/*
-* queryDSL 설정 추가
-* https://velog.io/@juhyeon1114/Spring-QueryDsl-gradle-%EC%84%A4%EC%A0%95-Spring-boot-3.0-%EC%9D%B4%EC%83%81
-*/
+// queryDSL 설정 추가
+// https://velog.io/@juhyeon1114/Spring-QueryDsl-gradle-%EC%84%A4%EC%A0%95-Spring-boot-3.0-%EC%9D%B4%EC%83%81
+	
 //Querydsl Q Class 생성 위치
 def querydslDir = "$buildDir/generated/querydsl"
 //Querydsl Q Class 생성 위치 지정
