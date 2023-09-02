@@ -31,17 +31,23 @@ public class User implements UserDetails {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "uid", nullable = true, unique = true)
+    private String uid;
+
+    @Column(name = "fcm", nullable = true, unique = true)
+    private String fcm;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = true) //파베 로그인만 지원하기 때문에 아직 사용하지는 않지만 추후 사용을 위해 만들어둠
     private String password;
 
     @Column(name = "nickName", nullable = false, unique = true)
     private String nickName;
 
-    @Column(name = "desc", nullable = false)
-    private String desc;
+    @Column(name = "rmk", nullable = false)
+    private String rmk;
 
     @Column(name = "jobCd", nullable = false)
     private String jobCd;
@@ -53,11 +59,13 @@ public class User implements UserDetails {
     private List<Scrap> scraps = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String nickName, String desc, String jobCd) {
+    public User(String uid, String fcm, String email, String password, String nickName, String rmk, String jobCd) {
+        this.uid = uid;
+        this.fcm = fcm;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
-        this.desc = desc;
+        this.rmk = rmk;
         this.jobCd = jobCd;
     }
 

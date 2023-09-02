@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class AddUserRequestDto {
+public class FBUserRequestDto {
+    private String uid;
+    private String fcm;
     private String email;
-    private String password;
     private String nickName;
     private String jobCd;
-    private String desc;
 }
