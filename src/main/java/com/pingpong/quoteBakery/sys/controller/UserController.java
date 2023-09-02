@@ -1,5 +1,6 @@
 package com.pingpong.quoteBakery.sys.controller;
 
+import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
 import com.pingpong.quoteBakery.sys.resource.UserResource;
@@ -19,8 +20,8 @@ public class UserController {
     private final CommonConverter commonConverter;
 
     @PostMapping("/signup")
-    public Long signup(@RequestBody FBUserRequestDto requestDto) {
-        return userService.saveByFireBase(requestDto);
+    public ApiRes<UserResource> signup(@RequestBody FBUserRequestDto requestDto) {
+        return ApiRes.createSuccess(commonConverter.convertToGeneric(userService.saveByFireBase(requestDto), UserResource.class));
     }
 
     @GetMapping("/validate-uid/{uid}")
@@ -29,8 +30,8 @@ public class UserController {
             responses = {@ApiResponse(responseCode = "200", description = "검증 성공")}
     )
     @Parameter(name = "uid", description = "uid", in = ParameterIn.PATH)
-    public boolean validateUid(@PathVariable("uid") String uid) {
-        return userService.validateUid(uid);
+    public ApiRes<Boolean> validateUid(@PathVariable("uid") String uid) {
+        return ApiRes.createSuccess(userService.validateUid(uid));
     }
 
     @GetMapping("/validate-nickname")
@@ -38,8 +39,8 @@ public class UserController {
             description = "닉네임이 중복된 경우 FALSE, 중복이 아닌 경우 TRUE.",
             responses = {@ApiResponse(responseCode = "200", description = "검증 성공")}
     )
-    public boolean validateNickname(@Parameter(description = "닉네임") @RequestParam("nickname") String nickname) {
-        return userService.validateNickname(nickname);
+    public ApiRes<Boolean> validateNickname(@Parameter(description = "닉네임") @RequestParam("nickname") String nickname) {
+        return ApiRes.createSuccess(userService.validateNickname(nickname));
     }
 
     @GetMapping("/search-user-by-uid/{uid}")
@@ -48,8 +49,8 @@ public class UserController {
             responses = {@ApiResponse(responseCode = "200", description = "조회 성공")}
     )
     @Parameter(name = "uid", description = "uid", in = ParameterIn.PATH)
-    public UserResource searchUserByUid(@PathVariable("uid") String uid) {
-        return commonConverter.convertToGeneric(userService.findByUid(uid), UserResource.class);
+    public ApiRes<UserResource> searchUserByUid(@PathVariable("uid") String uid) {
+        return ApiRes.createSuccess(commonConverter.convertToGeneric(userService.findByUid(uid), UserResource.class));
     }
 
     @GetMapping("/search-user-by-id/{id}")
@@ -58,7 +59,7 @@ public class UserController {
             responses = {@ApiResponse(responseCode = "200", description = "조회 성공")}
     )
     @Parameter(name = "id", description = "id", in = ParameterIn.PATH)
-    public UserResource searchUserByUid(@PathVariable("id") Long id) {
-        return commonConverter.convertToGeneric(userService.findById(id), UserResource.class);
+    public ApiRes<UserResource> searchUserByUid(@PathVariable("id") Long id) {
+        return ApiRes.createSuccess(commonConverter.convertToGeneric(userService.findById(id), UserResource.class));
     }
 }

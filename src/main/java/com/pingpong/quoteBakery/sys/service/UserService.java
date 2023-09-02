@@ -22,17 +22,19 @@ public class UserService {
     private final CommCdTpService commCdTpService;
     private final CommonConverter commonConverter;
 
-    public Long saveByFireBase(FBUserRequestDto userReqDto) {
+    public UserDto saveByFireBase(FBUserRequestDto userReqDto) {
         String randRmk = makeRandomRmk();
 
-        return userRepository.save(User.builder()
+        User user = userRepository.save(User.builder()
                 .uid(userReqDto.getUid())
                 .fcm(userReqDto.getFcm())
                 .email(userReqDto.getEmail())
                 .nickname(userReqDto.getNickname())
                 .jobCd(userReqDto.getJobCd())
                 .rmk(randRmk)
-                .build()).getId();
+                .build());
+
+        return commonConverter.convertToGeneric(user, UserDto.class);
     }
 
     private String makeRandomRmk() {
