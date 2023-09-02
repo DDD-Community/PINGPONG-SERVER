@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,8 +40,10 @@ public class UserService {
     }
 
     private String makeRandomRmk() {
-        CommCdTpDto dto = commCdTpService.getCommCdTpByCd("user_desc");
-        List<CommCdDto> cdList = dto.getCommCds();
+        CommCdTpDto tpDto = commCdTpService.getCommCdTpByCd("user_desc");
+        List<CommCdDto> cdList = tpDto.getCommCds()
+                .stream().filter(commCdDto -> Objects.equals(commCdDto.getUseYn(), Boolean.TRUE))
+                .collect(Collectors.toList());
 
         if (cdList != null && !cdList.isEmpty()) {
             Random random = new Random();

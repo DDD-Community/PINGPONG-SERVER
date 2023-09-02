@@ -11,5 +11,7 @@ public class CommCdDto {
     private String commCd;
     private String commNm;
     private CommCdTpDto commCdTp;
+    private Long sortSeq;
+    private Boolean useYn;
 }
 

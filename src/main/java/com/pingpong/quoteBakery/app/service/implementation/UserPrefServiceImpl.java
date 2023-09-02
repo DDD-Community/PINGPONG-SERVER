@@ -10,12 +10,16 @@ import com.pingpong.quoteBakery.app.service.UserPrefService;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
 import com.pingpong.quoteBakery.sys.domain.User;
+import com.pingpong.quoteBakery.sys.dto.CommCdDto;
 import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
 import com.pingpong.quoteBakery.sys.service.CommCdTpService;
 import com.pingpong.quoteBakery.sys.service.UserService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,7 +43,14 @@ public class UserPrefServiceImpl implements UserPrefService {
 
     @Override
     public List<CommCdTpDto> searchUserPrefCode() {
-        return commCdTpService.getCommCdTpListByCd(new ArrayList<>(Arrays.asList(FLAVOR, SOURCE, JOB)));
+        List<CommCdTpDto> commCdTpDtos = commCdTpService.getCommCdTpListByCd(new ArrayList<>(Arrays.asList(FLAVOR, SOURCE, JOB)));
+        for (CommCdTpDto commCdTpDto : commCdTpDtos) {
+            List<CommCdDto> filtered = commCdTpDto.getCommCds().stream()
+                    .filter(commCdDto -> Objects.equals(commCdDto.getUseYn(), Boolean.TRUE))
+                    .collect(Collectors.toList());
+            commCdTpDto.setCommCds(filtered);
+        }
+        return commCdTpDtos;
     }
 
     @Override

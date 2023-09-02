@@ -18,5 +18,11 @@ public class CommCdResource extends BaseResource {
 
     @Schema(description = "공통코드명")
     private String commNm;
+
+    @Schema(description = "정렬순서")
+    private Long sortSeq;
+
+    @Schema(description = "사용여부")
+    private Boolean useYn;
 }
 

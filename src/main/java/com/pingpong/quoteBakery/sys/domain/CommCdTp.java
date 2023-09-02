@@ -31,5 +31,6 @@ public class CommCdTp extends BaseEntity {
     private String commCdTpNm;
 
     @OneToMany(mappedBy = "commCdTp")
+    @OrderBy("sortSeq ASC")
     private List<CommCd> commCds = new ArrayList<>();
 }
