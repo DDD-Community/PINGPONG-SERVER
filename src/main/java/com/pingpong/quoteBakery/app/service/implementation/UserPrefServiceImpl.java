@@ -35,10 +35,11 @@ public class UserPrefServiceImpl implements UserPrefService {
 
     public static final String FLAVOR = "flavor";
     public static final String SOURCE = "source";
+    public static final String JOB = "job";
 
     @Override
     public List<CommCdTpDto> searchUserPrefCode() {
-        return commCdTpService.getCommCdTpListByCd(new ArrayList<>(Arrays.asList(FLAVOR, SOURCE)));
+        return commCdTpService.getCommCdTpListByCd(new ArrayList<>(Arrays.asList(FLAVOR, SOURCE, JOB)));
     }
 
     @Override

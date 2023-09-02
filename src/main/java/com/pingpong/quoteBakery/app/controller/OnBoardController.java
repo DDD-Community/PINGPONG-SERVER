@@ -39,7 +39,7 @@ public class  OnBoardController {
      */
     @GetMapping("/search-user-pref-codes")
     @Operation(summary = "온보딩에서 사용할 사용자 취향 관련 공통코드 조회",
-            description  = "사용자 취향 관련한 명언 공통코드 맛/출처 조회",
+            description  = "사용자 취향 관련한 명언 공통코드 맛/출처/직업 조회",
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
     )
     public ApiRes<List<CommCdTpResource>> searchCommCds(){
