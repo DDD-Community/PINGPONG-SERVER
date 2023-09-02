@@ -55,4 +55,8 @@ public class UserService {
         return userRepository.existsByNickName(nickName);
     }
 
+    public boolean validateUid(String uid){
+        return userRepository.existsByUid(uid);
+    }
+
 }
