@@ -1,9 +1,12 @@
 package com.pingpong.quoteBakery.sys.service;
 
+import com.pingpong.quoteBakery.com.converter.CommonConverter;
+import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
 import com.pingpong.quoteBakery.sys.domain.User;
 import com.pingpong.quoteBakery.sys.dto.CommCdDto;
 import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
 import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
+import com.pingpong.quoteBakery.sys.dto.UserDto;
 import com.pingpong.quoteBakery.sys.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CommCdTpService commCdTpService;
+    private final CommonConverter commonConverter;
 
     public Long saveByFireBase(FBUserRequestDto userReqDto) {
         String randRmk = makeRandomRmk();
@@ -48,7 +52,12 @@ public class UserService {
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+                .orElseThrow(() -> new BusinessInvalidValueException("Unexpected user"));
+    }
+
+    public UserDto findByUid(String uid){
+        User user = userRepository.findByUid(uid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+        return commonConverter.convertToGeneric(user, UserDto.class);
     }
 
     public boolean validateNickname(String nickname){
@@ -58,5 +67,4 @@ public class UserService {
     public boolean validateUid(String uid){
         return userRepository.existsByUid(uid);
     }
-
 }
