@@ -25,7 +25,7 @@ public class UserService {
                 .uid(userReqDto.getUid())
                 .fcm(userReqDto.getFcm())
                 .email(userReqDto.getEmail())
-                .nickName(userReqDto.getNickName())
+                .nickname(userReqDto.getNickname())
                 .jobCd(userReqDto.getJobCd())
                 .rmk(randRmk)
                 .build()).getUid();
@@ -51,8 +51,8 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
 
-    public boolean validateNickName(String nickName){
-        return userRepository.existsByNickName(nickName);
+    public boolean validateNickname(String nickname){
+        return !userRepository.existsByNickname(nickname);
     }
 
     public boolean validateUid(String uid){

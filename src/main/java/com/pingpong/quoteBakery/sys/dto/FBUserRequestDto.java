@@ -9,6 +9,6 @@ public class FBUserRequestDto {
     private String uid;
     private String fcm;
     private String email;
-    private String nickName;
+    private String nickname;
     private String jobCd;
 }

@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("/validate-uid/{uid}")
     @Operation(summary = "uid 유무 검사",
-            description = "uid 유무를 검사한다.",
+            description = "uid가 DB에 저장된 경우 TRUE, uid가 없을 경우 FALSE.",
             responses = {@ApiResponse(responseCode = "200", description = "검증 성공")}
     )
     @Parameter(name = "uid", description = "uid", in = ParameterIn.PATH)
@@ -30,13 +30,12 @@ public class UserController {
         return userService.validateUid(uid);
     }
 
-    @GetMapping("/validate-nick-name/{nickName}")
-    @Operation(summary = "nickName 중복 유효성 검사",
-            description = "닉네임 중복 유효성을 검사한다.",
+    @GetMapping("/validate-nickname")
+    @Operation(summary = "nickname 중복 유효성 검사",
+            description = "닉네임이 중복된 경우 FALSE, 중복이 아닌 경우 TRUE.",
             responses = {@ApiResponse(responseCode = "200", description = "검증 성공")}
     )
-    @Parameter(name = "nickName", description = "닉네임", in = ParameterIn.PATH)
-    public boolean validateNickName(@PathVariable("nickName") String nickName) {
-        return userService.validateNickName(nickName);
+    public boolean validateNickname(@Parameter(description = "닉네임") @RequestParam("nickname") String nickname) {
+        return userService.validateNickname(nickname);
     }
 }
