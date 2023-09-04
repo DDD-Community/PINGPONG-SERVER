@@ -3,6 +3,7 @@ package com.pingpong.quoteBakery.sys.controller;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
+import com.pingpong.quoteBakery.sys.dto.WithdrawalDto;
 import com.pingpong.quoteBakery.sys.resource.UserResource;
 import com.pingpong.quoteBakery.sys.resource.UserWithdrawalResource;
 import com.pingpong.quoteBakery.sys.service.UserService;
@@ -69,6 +70,6 @@ public class UserController {
     * */
     @PostMapping("/withdrawal")
     public void signup(@RequestBody UserWithdrawalResource withdrawalResource) {
-        userService.withdrawalAccount(withdrawalResource.getReason());
+        userService.withdrawalAccount(commonConverter.convertToGeneric(withdrawalResource, WithdrawalDto.class));
     }
 }

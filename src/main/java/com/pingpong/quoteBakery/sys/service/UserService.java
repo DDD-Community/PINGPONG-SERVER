@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -49,9 +48,9 @@ public class UserService {
         CommCdTpDto tpDto = commCdTpService.getCommCdTpByCd("user_desc");
         List<CommCdDto> cdList = tpDto.getCommCds()
                 .stream().filter(commCdDto -> Objects.equals(commCdDto.getUseYn(), Boolean.TRUE))
-                .collect(Collectors.toList());
+                .toList();
 
-        if (cdList != null && !cdList.isEmpty()) {
+        if (!cdList.isEmpty()) {
             Random random = new Random();
             int randomIndex = random.nextInt(cdList.size());
             CommCdDto randomCommCd = cdList.get(randomIndex);
@@ -81,14 +80,17 @@ public class UserService {
     }
 
     @Transactional
-    public void withdrawalAccount(String reason){
-        String uid = tokenService.getCurrentTokenInfo().getUid();
+    public void withdrawalAccount(WithdrawalDto dto){
+        String tokenUid = tokenService.getCurrentTokenInfo().getUid();
+        String requestUid = dto.getUid();
 
-        User user = userRepository.findByUid(uid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+        if(!requestUid.equals(tokenUid)) throw new BusinessInvalidValueException("본인만 회원 탈퇴할 수 있습니다.");
+
+        User user = userRepository.findByUid(tokenUid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
         userRepository.delete(user);
 
-        if(reason != null) {
-            WithdrawalReason reasonEntity = WithdrawalReason.builder().reason(reason).build();
+        if(dto.getReason() != null) {
+            WithdrawalReason reasonEntity = WithdrawalReason.builder().reason(dto.getReason()).build();
             withdrawalRepository.save(reasonEntity);
         }
     }
