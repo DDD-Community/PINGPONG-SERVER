@@ -94,4 +94,14 @@ public class UserService {
             withdrawalRepository.save(reasonEntity);
         }
     }
+
+    @Transactional
+    public void updateUserInfo(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+        String tokenUid = tokenService.getCurrentTokenInfo().getUid();
+
+        if(!tokenUid.equals(user.getUid())) throw new BusinessInvalidValueException("본인만 수정할 수 있습니다.");
+
+        user.updateUserInfo(userDto);
+    }
 }

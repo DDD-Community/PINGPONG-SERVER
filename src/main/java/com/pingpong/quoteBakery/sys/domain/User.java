@@ -2,6 +2,7 @@ package com.pingpong.quoteBakery.sys.domain;
 
 import com.pingpong.quoteBakery.app.domain.Like;
 import com.pingpong.quoteBakery.app.domain.Scrap;
+import com.pingpong.quoteBakery.sys.dto.UserDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -67,6 +68,10 @@ public class User implements UserDetails {
         this.nickname = nickname;
         this.rmk = rmk;
         this.jobCd = jobCd;
+    }
+
+    public void updateUserInfo(UserDto userDto) {
+        this.nickname = userDto.getNickname();
     }
 
 

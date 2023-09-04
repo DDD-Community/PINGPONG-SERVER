@@ -3,6 +3,7 @@ package com.pingpong.quoteBakery.sys.controller;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
+import com.pingpong.quoteBakery.sys.dto.UserDto;
 import com.pingpong.quoteBakery.sys.dto.WithdrawalDto;
 import com.pingpong.quoteBakery.sys.resource.UserResource;
 import com.pingpong.quoteBakery.sys.resource.UserWithdrawalResource;
@@ -10,6 +11,8 @@ import com.pingpong.quoteBakery.sys.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +74,21 @@ public class UserController {
     @PostMapping("/withdrawal")
     public void signup(@RequestBody UserWithdrawalResource withdrawalResource) {
         userService.withdrawalAccount(commonConverter.convertToGeneric(withdrawalResource, WithdrawalDto.class));
+    }
+
+    /*
+     * 사용자 정보 수정
+     *  */
+    @PutMapping("/user-info/{userId}")
+    @Operation(summary = "사용자 정보 수정", description  = "사용자의 정보를 수정 한다.",
+            responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "사용자ID")))}
+    )
+    @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
+    public void updateUserInfo(@PathVariable("userId") Long userId,
+    @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserResource userResource){
+        UserDto userDto = new UserDto();
+        userDto.setId(userId);
+        userDto.setNickname(userDto.getNickname());
+        userService.updateUserInfo(userDto);
     }
 }
