@@ -3,13 +3,14 @@ package com.pingpong.quoteBakery.sys.service;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
 import com.pingpong.quoteBakery.sys.domain.User;
-import com.pingpong.quoteBakery.sys.dto.CommCdDto;
-import com.pingpong.quoteBakery.sys.dto.CommCdTpDto;
-import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
-import com.pingpong.quoteBakery.sys.dto.UserDto;
+import com.pingpong.quoteBakery.sys.domain.WithdrawalReason;
+import com.pingpong.quoteBakery.sys.dto.*;
 import com.pingpong.quoteBakery.sys.repository.UserRepository;
+import com.pingpong.quoteBakery.sys.repository.WithdrawalRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,13 +18,18 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
+    private final WithdrawalRepository withdrawalRepository;
     private final CommCdTpService commCdTpService;
     private final CommonConverter commonConverter;
+    private final TokenService tokenService;
 
+    @Transactional
     public UserDto saveByFireBase(FBUserRequestDto userReqDto) {
         String randRmk = makeRandomRmk();
 
@@ -72,5 +78,18 @@ public class UserService {
 
     public boolean validateUid(String uid){
         return userRepository.existsByUid(uid);
+    }
+
+    @Transactional
+    public void withdrawalAccount(String reason){
+        String uid = tokenService.getCurrentTokenInfo().getUid();
+
+        User user = userRepository.findByUid(uid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+        userRepository.delete(user);
+
+        if(reason != null) {
+            WithdrawalReason reasonEntity = WithdrawalReason.builder().reason(reason).build();
+            withdrawalRepository.save(reasonEntity);
+        }
     }
 }

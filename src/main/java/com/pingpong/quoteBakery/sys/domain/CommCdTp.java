@@ -2,9 +2,7 @@ package com.pingpong.quoteBakery.sys.domain;
 
 import com.pingpong.quoteBakery.com.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "comm_cd_tps")
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommCdTp extends BaseEntity {
     @Id

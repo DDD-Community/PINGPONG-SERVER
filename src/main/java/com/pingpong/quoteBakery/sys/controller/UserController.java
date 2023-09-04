@@ -4,6 +4,7 @@ import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
 import com.pingpong.quoteBakery.sys.resource.UserResource;
+import com.pingpong.quoteBakery.sys.resource.UserWithdrawalResource;
 import com.pingpong.quoteBakery.sys.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -61,5 +62,13 @@ public class UserController {
     @Parameter(name = "id", description = "id", in = ParameterIn.PATH)
     public ApiRes<UserResource> searchUserByUid(@PathVariable("id") Long id) {
         return ApiRes.createSuccess(commonConverter.convertToGeneric(userService.findById(id), UserResource.class));
+    }
+
+    /*
+    * 회원 탈퇴
+    * */
+    @PostMapping("/withdrawal")
+    public void signup(@RequestBody UserWithdrawalResource withdrawalResource) {
+        userService.withdrawalAccount(withdrawalResource.getReason());
     }
 }
