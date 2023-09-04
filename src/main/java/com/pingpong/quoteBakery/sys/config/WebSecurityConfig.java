@@ -1,5 +1,6 @@
 package com.pingpong.quoteBakery.sys.config;
 
+import com.pingpong.quoteBakery.sys.filter.FirebaseFilter;
 import com.pingpong.quoteBakery.sys.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @RequiredArgsConstructor
@@ -17,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private final UserDetailService userService;
+    private final FirebaseFilter firebaseFilter;
 
     // 무시할 요청들에 대한 패턴 정의
     @Bean
@@ -29,6 +32,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .addFilterBefore(firebaseFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .authorizeRequests() // 인증,인가
                     .requestMatchers("/**").permitAll() //이 요청들은 인증/인가 작업을 수행하지 않음.
@@ -40,6 +44,10 @@ public class WebSecurityConfig {
                 .build();
     }
 
+
+    /*
+    * @deprecated
+    * */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
@@ -49,6 +57,9 @@ public class WebSecurityConfig {
                 .build();
     }
 
+    /*
+     * @deprecated
+     * */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
