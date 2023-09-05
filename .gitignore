@@ -8,7 +8,7 @@ gradle/wrapper/gradle-wrapper.jar
 
 # YAML
 *.yml
-.json
+*.json
 
 ### STS ###
 .apt_generated
