@@ -6,6 +6,7 @@ import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
 import com.pingpong.quoteBakery.sys.dto.UserDto;
 import com.pingpong.quoteBakery.sys.dto.WithdrawalDto;
 import com.pingpong.quoteBakery.sys.resource.UserResource;
+import com.pingpong.quoteBakery.sys.resource.UserUpdateResource;
 import com.pingpong.quoteBakery.sys.resource.UserWithdrawalResource;
 import com.pingpong.quoteBakery.sys.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,10 +86,10 @@ public class UserController {
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
     public void updateUserInfo(@PathVariable("userId") Long userId,
-    @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserResource userResource){
+    @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserUpdateResource userResource){
         UserDto userDto = new UserDto();
         userDto.setId(userId);
-        userDto.setNickname(userDto.getNickname());
+        userDto.setNickname(userResource.getNickname());
         userService.updateUserInfo(userDto);
     }
 }
