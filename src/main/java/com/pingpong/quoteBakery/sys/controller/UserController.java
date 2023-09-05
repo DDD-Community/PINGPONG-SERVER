@@ -73,6 +73,10 @@ public class UserController {
     * 회원 탈퇴
     * */
     @PostMapping("/withdrawal")
+    @Operation(summary = "회원 탈퇴",
+            description = "회원 정보 삭제 및 탈퇴 사유를 저장한다.",
+            responses = {@ApiResponse(responseCode = "200", description = "탈퇴 성공")}
+    )
     public void signup(@RequestBody UserWithdrawalResource withdrawalResource) {
         userService.withdrawalAccount(commonConverter.convertToGeneric(withdrawalResource, WithdrawalDto.class));
     }

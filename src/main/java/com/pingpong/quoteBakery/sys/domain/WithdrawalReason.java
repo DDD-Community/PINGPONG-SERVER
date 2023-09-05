@@ -17,7 +17,7 @@ import lombok.*;
 public class WithdrawalReason extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
-    @SequenceGenerator(name = "sequence_generator", sequenceName = "withdrawal_reasons_sequence", allocationSize = 50)
+    @SequenceGenerator(name = "sequence_generator", sequenceName = "withdrawal_reason_sequence", allocationSize = 50)
     @Column(name = "withdrawal_reason_id")
     private Long withdrawal_reason_id;
 
