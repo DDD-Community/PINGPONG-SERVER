@@ -1,5 +1,7 @@
 package com.pingpong.quoteBakery.sys.service;
 
+import com.pingpong.quoteBakery.app.persistence.LikeRepository;
+import com.pingpong.quoteBakery.app.persistence.ScrapRepository;
 import com.pingpong.quoteBakery.app.persistence.UserPreferenceRepository;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
@@ -29,6 +31,8 @@ public class UserService {
     private final CommonConverter commonConverter;
     private final TokenService tokenService;
     private final UserPreferenceRepository userPreferenceRepository;
+    private final LikeRepository likeRepository;
+    private final ScrapRepository scrapRepository;
 
     @Transactional
     public UserDto saveByFireBase(FBUserRequestDto userReqDto) {
@@ -88,9 +92,10 @@ public class UserService {
 
         if(!requestUid.equals(tokenUid)) throw new BusinessInvalidValueException("본인만 회원 탈퇴할 수 있습니다.");
 
-        User user = userRepository.findByUid(tokenUid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
-        // todo : 사용자취향/스크랩/좋아요 삭제
-
+        User user = userRepository.findByUid(requestUid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+        userPreferenceRepository.deleteAllByUserId(user.getId());
+        likeRepository.deleteAllByUserId(user.getId());
+        scrapRepository.deleteAllByUserId(user.getId());
         userRepository.delete(user);
 
         if(dto.getReason() != null) {
