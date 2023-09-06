@@ -42,7 +42,7 @@ public class HomeController {
     ){
 
         return ApiRes.createSuccess(quoteService.searchRandomQuotesByUser(userId, PageRequest.of(page, sizePerPage))
-                .map(quoteConverter::convertDtoToRandomResource));
+                .map(quote -> quoteConverter.convertDtoToRandomResource(quote, userId)));
     }
 
     /**
@@ -66,7 +66,7 @@ public class HomeController {
         searchResource.setMood(mood);
 
         return ApiRes.createSuccess(quoteConverter.convertDtoToRandomResource(
-                quoteService.getRandomQuoteWithSingle(quoteConverter.convertToGeneric(searchResource, QuoteSingleSearchDto.class))));
+                quoteService.getRandomQuoteWithSingle(quoteConverter.convertToGeneric(searchResource, QuoteSingleSearchDto.class)), userId));
     }
 
     /**

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class QuoteConverter extends CommonConverter {
     // RandomQuoteResource는 항상 사용자별로 요청됨.
-    public RandomQuoteResource convertDtoToRandomResource(QuoteDto quoteDto){
+    public RandomQuoteResource convertDtoToRandomResource(QuoteDto quoteDto, Long userId){
         if(quoteDto == null) return null;
 
         RandomQuoteResource resource  = convertToGeneric(quoteDto, RandomQuoteResource.class);
@@ -28,11 +28,11 @@ public class QuoteConverter extends CommonConverter {
         List<LikeDto> likes = quoteDto.getLikes();
         List<ScrapDto> scraps = quoteDto.getScraps();
         if(likes != null){
-           long cnt = likes.stream().filter(likeDto -> likeDto.getUserId().equals(quoteDto.getUserId())).count();
+           long cnt = likes.stream().filter(likeDto -> likeDto.getUserId().equals(userId)).count();
            if(cnt > 0) { resource.setLikeYn(Boolean.TRUE); } else { resource.setLikeYn(Boolean.FALSE); }
         }
         if(scraps != null){
-            long cnt = scraps.stream().filter(scrapDto -> scrapDto.getUserId().equals(quoteDto.getUserId())).count();
+            long cnt = scraps.stream().filter(scrapDto -> scrapDto.getUserId().equals(userId)).count();
             if(cnt > 0) { resource.setScrapYn(Boolean.TRUE); } else { resource.setScrapYn(Boolean.FALSE); }
         }
 

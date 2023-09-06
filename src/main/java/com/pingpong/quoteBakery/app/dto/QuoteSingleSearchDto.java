@@ -1,8 +1,6 @@
 package com.pingpong.quoteBakery.app.dto;
 
 import com.pingpong.quoteBakery.com.dto.BaseDto;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,8 +16,5 @@ public class QuoteSingleSearchDto extends BaseDto {
     private String source;
 
     private String mood;
-
-    // resource converter에서 좋아요/보관여부 세팅시에 필요
-    private  Long userId;
 }
 

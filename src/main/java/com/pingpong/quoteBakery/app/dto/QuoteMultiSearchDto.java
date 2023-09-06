@@ -21,8 +21,5 @@ public class QuoteMultiSearchDto extends BaseDto {
     private List<String> flavors;
     private List<String> sources;
     private List<String> moods;
-
-    // resource converter에서 좋아요/보관여부 세팅시에 필요
-    private  Long userId;
 }
 

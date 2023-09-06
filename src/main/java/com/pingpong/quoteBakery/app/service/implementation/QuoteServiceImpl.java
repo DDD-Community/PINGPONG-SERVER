@@ -51,21 +51,13 @@ public class QuoteServiceImpl implements QuoteService {
 
     @Override
     public QuoteDto getRandomQuoteWithMulti(QuoteMultiSearchDto searchDto) {
-        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithMulti(searchDto));
-
-        // resource converter에서 좋아요/보관여부 세팅시에 필요
-        if(quoteDto != null) quoteDto.setUserId(searchDto.getUserId());
-        return quoteDto;
+        return quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithMulti(searchDto));
     }
 
 
     @Override
     public QuoteDto getRandomQuoteWithSingle(QuoteSingleSearchDto searchDto) {
-        QuoteDto quoteDto = quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithSingle(searchDto));
-
-        // resource converter에서 좋아요/보관여부 세팅시에 필요
-        if(quoteDto != null) quoteDto.setUserId(searchDto.getUserId());
-        return quoteDto;
+        return quoteConverter.convertEntityToDto(quoteRepository.searchQuoteWithSingle(searchDto));
     }
 
     @Override
