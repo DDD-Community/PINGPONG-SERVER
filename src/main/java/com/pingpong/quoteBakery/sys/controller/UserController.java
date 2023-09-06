@@ -77,8 +77,9 @@ public class UserController {
             description = "회원 정보 삭제 및 탈퇴 사유를 저장한다.",
             responses = {@ApiResponse(responseCode = "200", description = "탈퇴 성공")}
     )
-    public void signup(@RequestBody UserWithdrawalResource withdrawalResource) {
+    public ApiRes<?> signup(@RequestBody UserWithdrawalResource withdrawalResource) {
         userService.withdrawalAccount(commonConverter.convertToGeneric(withdrawalResource, WithdrawalDto.class));
+        return ApiRes.createSuccessWithNoContent();
     }
 
     /*
@@ -89,11 +90,13 @@ public class UserController {
             responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "사용자ID")))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public void updateUserInfo(@PathVariable("userId") Long userId,
+    public ApiRes<?> updateUserInfo(@PathVariable("userId") Long userId,
     @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserUpdateResource userResource){
         UserDto userDto = new UserDto();
         userDto.setId(userId);
         userDto.setNickname(userResource.getNickname());
         userService.updateUserInfo(userDto);
+
+        return ApiRes.createSuccessWithNoContent();
     }
 }
