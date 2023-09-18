@@ -5,12 +5,12 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: CD
+name: CD-prod
 
-#dev브랜치가 push될 때 동작
+#prod브랜치가 push될 때 동작
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "prod" ]
     
 permissions:
   contents: read
@@ -39,12 +39,12 @@ jobs:
       run: chmod +x gradlew
       
     - name: Build with Gradle
-      if: contains(github.ref, 'develop')
-      run: SPRING_PROFILES_ACTIVE=[dev] ./gradlew clean copyGitSubmodule build
+      if: contains(github.ref, 'prod')
+      run: SPRING_PROFILES_ACTIVE=[prod] ./gradlew clean copyGitSubmodule build
       
     # Docker 이미지 Build
     - name: docker image build
-      run: docker build -t hyesookim95/pingpong-dev .
+      run: docker build -t hyesookim95/pingpong-prod -f Dockerfile-prod .
     
     # DockerHub Login
     - name: docker login 
@@ -55,7 +55,7 @@ jobs:
 
     # Docker Hub push
     - name: docker Hub push
-      run: docker push hyesookim95/pingpong-dev #도커허브계정/이미지이름
+      run: docker push hyesookim95/pingpong-prod #도커허브계정/이미지이름
       
     # AWS EC2 Server Connect & Docker 명령어 실행 
     - name: AWS EC2 Connection
@@ -67,9 +67,9 @@ jobs:
         port: ${{ secrets.DEV_SERVER_PORT }}
         timeout: 60s
         script: |
-          sudo docker stop quote-bakery
-          sudo docker rm quote-bakery
-          sudo docker pull hyesookim95/pingpong-dev
-          sudo docker run -it -d -p 9090:9090 --name quote-bakery hyesookim95/pingpong-dev
+          sudo docker stop quote-bakery-prod
+          sudo docker rm quote-bakery-prod
+          sudo docker pull hyesookim95/pingpong-prod
+          sudo docker run -it -d -p 8080:8080 --name quote-bakery-prod hyesookim95/pingpong-prod
     
  
