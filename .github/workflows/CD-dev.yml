@@ -64,12 +64,12 @@ jobs:
         host: ${{ secrets.DEV_SERVER_IP }}
         username: ${{ secrets.DEV_SERVER_USER }}
         key: ${{ secrets.DEV_SERVER_KEY }}
-        port: ${{ secrets.DEV_SERVER_PORT }}
+        port: 9090
         timeout: 60s
         script: |
-          sudo docker stop quote-bakery
-          sudo docker rm quote-bakery
+          sudo docker stop quote-bakery-dev
+          sudo docker rm quote-bakery-dev
           sudo docker pull hyesookim95/pingpong-dev
-          sudo docker run -it -d -p 9090:9090 --name quote-bakery hyesookim95/pingpong-dev
+          sudo docker run -it -d -p 9090:9090 --name quote-bakery-dev hyesookim95/pingpong-dev
     
  
