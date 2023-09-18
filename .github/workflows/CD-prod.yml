@@ -1,0 +1,75 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: CD
+
+#prod브랜치가 push될 때 동작
+on:
+  push:
+    branches: [ "prod" ]
+    
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # 소스 체크아웃
+    - name: Checkout source
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.HYESOO_GITHUB_TOKEN }}
+        submodules: 'true'
+        
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    # Gradlew 권한 설정
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build with Gradle
+      if: contains(github.ref, 'prod')
+      run: SPRING_PROFILES_ACTIVE=[prod] ./gradlew clean copyGitSubmodule build
+      
+    # Docker 이미지 Build
+    - name: docker image build
+      run: docker build -t hyesookim95/pingpong-prod -f Dockerfile-prod .
+    
+    # DockerHub Login
+    - name: docker login 
+      uses: docker/login-action@v2
+      with: 
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    # Docker Hub push
+    - name: docker Hub push
+      run: docker push hyesookim95/pingpong-prod #도커허브계정/이미지이름
+      
+    # AWS EC2 Server Connect & Docker 명령어 실행 
+    - name: AWS EC2 Connection
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.DEV_SERVER_IP }}
+        username: ${{ secrets.DEV_SERVER_USER }}
+        key: ${{ secrets.DEV_SERVER_KEY }}
+        port: 8080
+        timeout: 60s
+        script: |
+          sudo docker stop quote-bakery-prod
+          sudo docker rm quote-bakery-prod
+          sudo docker pull hyesookim95/pingpong-prod
+          sudo docker run -it -d -p 8080:8080 --name quote-bakery-prod hyesookim95/pingpong-prod
+    
+ 
