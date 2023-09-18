@@ -64,7 +64,7 @@ jobs:
         host: ${{ secrets.DEV_SERVER_IP }}
         username: ${{ secrets.DEV_SERVER_USER }}
         key: ${{ secrets.DEV_SERVER_KEY }}
-        port: 8080
+        port: ${{ secrets.DEV_SERVER_PORT }}
         timeout: 60s
         script: |
           sudo docker stop quote-bakery-prod
