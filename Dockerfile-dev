@@ -11,4 +11,4 @@ COPY build/libs/*.jar pingpong-dev.jar
 EXPOSE 9090
 
 # Set the entrypoint command to run your application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "pingpong-dev.jar"]
