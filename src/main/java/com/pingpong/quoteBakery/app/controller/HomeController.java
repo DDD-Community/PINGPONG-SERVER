@@ -2,10 +2,7 @@ package com.pingpong.quoteBakery.app.controller;
 
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
-import com.pingpong.quoteBakery.app.resource.LikeResource;
-import com.pingpong.quoteBakery.app.resource.QuoteConverter;
-import com.pingpong.quoteBakery.app.resource.RandomQuoteResource;
-import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchResource;
+import com.pingpong.quoteBakery.app.resource.*;
 import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -78,7 +75,7 @@ public class HomeController {
     @Operation(summary = "명언 좋아요", description  = "명언 좋아요",
         responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "좋아요ID")))}
     )
-    public ApiRes<Long> likeQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody LikeResource createResource){
+    public ApiRes<Long> likeQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody LikeCreateResource createResource){
         return ApiRes.createSuccess(quoteService.saveLike(quoteConverter.convertToGeneric(createResource, LikeDto.class)));
     }
 }
