@@ -15,17 +15,13 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,14 +37,28 @@ public class MyPageController {
      * 마이페이지 좋아요 목록 조회
      */
     @GetMapping("/likes/{userId}")
-    @Operation(summary = "마이페이지에서 좋아요 목록 조회",
-            description  = "마이페이지 좋아요한 명언 목록 조회",
+    @Operation(summary = "마이페이지에서 좋아요 목록 조회(보관함조회)",
+            description  = "마이페이지 좋아요한 명언 목록 조회(보관함조회)",
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
     public ApiRes<List<QuoteResource>> getLikedQuotes(@PathVariable("userId") Long userId){
         return ApiRes.createSuccess(quoteService.getLikedQuotes(userId)
             .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList()));
+    }
+
+    /**
+     * 마이페이지 좋아요 삭제
+     */
+    @DeleteMapping("/like/{likeId}")
+    @Operation(summary = "마이페이지에서 좋아요 단건 삭제(보관 삭제)",
+            description  = "마이페이지 좋아요 단건 삭제(보관 삭제)",
+            responses = { @ApiResponse(responseCode = "200", description = "삭제 성공")}
+    )
+    @Parameter(name = "likeId", description = "좋아요(보관)ID", in = ParameterIn.PATH)
+    public ApiRes<?> deleteLike(@PathVariable("likeId") Long likeId){
+        quoteService.deleteLike(likeId);
+        return ApiRes.createSuccessWithNoContent();
     }
 
     /**

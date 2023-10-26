@@ -10,6 +10,7 @@ import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
 import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
 import com.pingpong.quoteBakery.sys.domain.User;
+import com.pingpong.quoteBakery.sys.service.TokenService;
 import com.pingpong.quoteBakery.sys.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class QuoteServiceImpl implements QuoteService {
     private final QuoteRepository quoteRepository;
     private final LikeRepository likeRepository;
     private final QuoteConverter quoteConverter;
+    private final TokenService tokenService;
 
     @Override
     public Page<QuoteDto> searchRandomQuotesByUser(Long userId, Pageable pageable) {
@@ -81,5 +83,19 @@ public class QuoteServiceImpl implements QuoteService {
             .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
 
         return likeRepository.save(Like.toEntity(user, quote)).getLikeId();
+    }
+
+    @Override
+    @Transactional
+    public void deleteLike(Long likeId) {
+        Like like = likeRepository.findById(likeId)
+                .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 좋아요 정보가 없습니다."));
+
+        String tokenUid = tokenService.getCurrentTokenInfo().getUid();
+        String requestUid = like.getUser().getUid();
+
+        if(!requestUid.equals(tokenUid)) throw new BusinessInvalidValueException("본인만 좋아요 취소할 수 있습니다.");
+
+        likeRepository.delete(like);
     }
 }

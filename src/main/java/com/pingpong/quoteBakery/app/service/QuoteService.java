@@ -41,5 +41,11 @@ public interface QuoteService {
      * @return likeId
      */
     Long saveLike(LikeDto likeDto);
+
+    /**
+     * @param likeId
+     * @return
+     */
+    void deleteLike(Long likeId);
 }
 
