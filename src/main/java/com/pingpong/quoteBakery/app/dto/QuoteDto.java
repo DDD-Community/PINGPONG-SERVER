@@ -24,9 +24,7 @@ public class QuoteDto extends BaseDto {
 
     private List<LikeDto> likes = new ArrayList<>();
 
-    private List<ScrapDto> scraps = new ArrayList<>();
-
-    // quoteConverter likes/scraps 변환용
+    // quoteConverter likes 변환용
     private Long userId;
 }
 

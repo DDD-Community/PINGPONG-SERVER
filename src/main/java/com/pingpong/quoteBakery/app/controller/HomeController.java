@@ -2,8 +2,10 @@ package com.pingpong.quoteBakery.app.controller;
 
 import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
-import com.pingpong.quoteBakery.app.dto.ScrapDto;
-import com.pingpong.quoteBakery.app.resource.*;
+import com.pingpong.quoteBakery.app.resource.LikeResource;
+import com.pingpong.quoteBakery.app.resource.QuoteConverter;
+import com.pingpong.quoteBakery.app.resource.RandomQuoteResource;
+import com.pingpong.quoteBakery.app.resource.RandomQuoteSearchResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import io.swagger.v3.oas.annotations.Operation;

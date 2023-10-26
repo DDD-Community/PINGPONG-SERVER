@@ -1,18 +1,8 @@
 package com.pingpong.quoteBakery.sys.domain;
 
 import com.pingpong.quoteBakery.app.domain.Like;
-import com.pingpong.quoteBakery.app.domain.Scrap;
 import com.pingpong.quoteBakery.sys.dto.UserDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
-import java.util.*;
-
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +10,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,9 +49,6 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Like> likes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Scrap> scraps = new ArrayList<>();
 
     @Builder
     public User(String uid, String fcm, String email, String password, String nickname, String rmk, String jobCd) {

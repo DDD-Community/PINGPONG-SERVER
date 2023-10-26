@@ -32,9 +32,5 @@ public class RandomQuoteResource extends BaseResource {
 
     @Schema(description = "좋아요여부")
     private Boolean likeYn;
-
-
-    @Schema(description = "보관여부")
-    private Boolean scrapYn;
 }
 

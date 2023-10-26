@@ -4,10 +4,10 @@ import com.pingpong.quoteBakery.app.dto.LikeDto;
 import com.pingpong.quoteBakery.app.dto.QuoteDto;
 import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
 import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
-import com.pingpong.quoteBakery.app.dto.ScrapDto;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface QuoteService {
     /**
@@ -34,8 +34,6 @@ public interface QuoteService {
 
     List<QuoteDto> getLikedQuotes(Long userId);
 
-    List<QuoteDto> getScrapedQuotes(Long userId);
-
     Page<QuoteDto> searchQuotePages(QuoteMultiSearchDto searchDto, Pageable pageable);
 
     /**
@@ -43,11 +41,5 @@ public interface QuoteService {
      * @return likeId
      */
     Long saveLike(LikeDto likeDto);
-
-    /**
-     * @param scrapDto
-     * @return scrapId
-     */
-    Long saveScrap(ScrapDto scrapDto);
 }
 
