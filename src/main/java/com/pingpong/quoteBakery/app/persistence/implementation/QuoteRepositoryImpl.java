@@ -4,8 +4,6 @@
  */
 package com.pingpong.quoteBakery.app.persistence.implementation;
 
-import static com.pingpong.quoteBakery.app.domain.QQuote.quote;
-
 import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
 import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
@@ -17,9 +15,13 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.impl.JPAQuery;
 import io.micrometer.common.util.StringUtils;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import static com.pingpong.quoteBakery.app.domain.QQuote.quote;
 
 @Repository
 public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteRepositoryCustom {
@@ -79,13 +81,16 @@ public class QuoteRepositoryImpl extends QueryDslSupport implements QuoteReposit
     }
 
     @Override
-    public List<Quote> searchQuotes(QuoteMultiSearchDto searchDto) {
+    public Page<Quote> searchQuotes(QuoteMultiSearchDto searchDto, Pageable pageable) {
+        return applyPagination(pageable, query -> makeSearchQuery(searchDto));
+    }
+
+    private JPAQuery<Quote> makeSearchQuery(QuoteMultiSearchDto searchDto){
         BooleanBuilder builder = this.makeBlnBldrMulti(searchDto);
 
         return getQueryFactory().selectFrom(quote)
-            .where(builder)
-            .orderBy(createOrderSpecifier(quote.content, searchDto.getOrderBy()))
-            .fetch();
+                .where(builder)
+                .orderBy(createOrderSpecifier(quote.content, searchDto.getOrderBy()));
     }
 
     private OrderSpecifier<?> createOrderSpecifier(StringPath sortProperty, String orderBy) {

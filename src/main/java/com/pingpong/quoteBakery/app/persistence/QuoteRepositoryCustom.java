@@ -7,7 +7,8 @@ package com.pingpong.quoteBakery.app.persistence;
 import com.pingpong.quoteBakery.app.domain.Quote;
 import com.pingpong.quoteBakery.app.dto.QuoteMultiSearchDto;
 import com.pingpong.quoteBakery.app.dto.QuoteSingleSearchDto;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface QuoteRepositoryCustom {
     /*
@@ -18,5 +19,5 @@ public interface QuoteRepositoryCustom {
      * 맛,출처,상황 조건을 각각 여러개 가질 수 있는 조회 건
      * */
     Quote searchQuoteWithMulti(QuoteMultiSearchDto searchDto);
-    List<Quote> searchQuotes(QuoteMultiSearchDto searchDto);
+    Page<Quote> searchQuotes(QuoteMultiSearchDto searchDto, Pageable pageable);
 }
