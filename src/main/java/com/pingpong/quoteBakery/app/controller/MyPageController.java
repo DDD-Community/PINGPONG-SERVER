@@ -52,20 +52,6 @@ public class MyPageController {
     }
 
     /**
-     * 마이페이지 스크랩 목록 조회
-     */
-    @GetMapping("/scraps/{userId}")
-    @Operation(summary = "마이페이지에서 스크랩 목록 조회",
-        description  = "마이페이지 보관한 명언 목록 조회",
-        responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
-    )
-    @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public ApiRes<List<QuoteResource>> getScrapedQuotes(@PathVariable("userId") Long userId){
-        return ApiRes.createSuccess(quoteService.getScrapedQuotes(userId)
-            .stream().map(dto -> quoteConverter.convertToGeneric(dto, QuoteResource.class)).collect(Collectors.toList()));
-    }
-
-    /**
      * 사용자 취향 조회
      */
     @GetMapping("/user-pref/{userId}")

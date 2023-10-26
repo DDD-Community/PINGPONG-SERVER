@@ -79,16 +79,5 @@ public class HomeController {
     public ApiRes<Long> likeQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody LikeResource createResource){
         return ApiRes.createSuccess(quoteService.saveLike(quoteConverter.convertToGeneric(createResource, LikeDto.class)));
     }
-
-    /**
-     * 명언 보관
-     */
-    @PostMapping("/scrap")
-    @Operation(summary = "명언 스크랩", description  = "명언 스크랩",
-        responses = {@ApiResponse(responseCode = "200", description = "등록 성공", content = @Content(schema = @Schema(type = "number", description = "스크랩ID")))}
-    )
-    public ApiRes<Long> scrapQuote(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody ScrapResource createResource){
-        return ApiRes.createSuccess(quoteService.saveScrap(quoteConverter.convertToGeneric(createResource, ScrapDto.class)));
-    }
 }
 
