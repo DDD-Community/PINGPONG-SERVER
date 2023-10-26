@@ -86,6 +86,9 @@ public class UserPrefServiceImpl implements UserPrefService {
     @Override
     public UserPrefDto getUserPrefByUserId(Long userId) {
         UserPrefDto userPrefDto = commonConverter.convertToGeneric(userPreferenceRepository.findByUser_Id(userId), UserPrefDto.class);
+
+        if(userPrefDto == null) throw new BusinessInvalidValueException("해당 사용자의 명언 취향이 없습니다.");
+
         // "nutty,spicy" -> ['nutty', 'spicy']
         userPrefDto.setFlavors(convertStringToList(",", userPrefDto.getFlavor()));
         userPrefDto.setSources(convertStringToList(",", userPrefDto.getSource()));
