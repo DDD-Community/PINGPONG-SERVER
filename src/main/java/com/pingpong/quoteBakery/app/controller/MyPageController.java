@@ -39,7 +39,7 @@ public class MyPageController {
     @GetMapping("/likes/{userId}")
     @Operation(summary = "마이페이지에서 좋아요 목록 조회(보관함조회)",
             description  = "마이페이지 좋아요한 명언 목록 조회(보관함조회)",
-            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = CommCdTpResource.class)))}
+            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = QuoteResource.class)))}
     )
     @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
     public ApiRes<List<QuoteResource>> getLikedQuotes(@PathVariable("userId") Long userId){
