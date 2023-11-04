@@ -17,17 +17,18 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class QuoteConverter extends CommonConverter {
-    // RandomQuoteResource는 항상 사용자별로 요청됨.
-    public RandomQuoteResource convertDtoToRandomResource(QuoteDto quoteDto, Long userId){
+    public QuoteResource convertDtoToRandomResource(QuoteDto quoteDto, Long userId){
         if(quoteDto == null) return null;
 
-        RandomQuoteResource resource  = convertToGeneric(quoteDto, RandomQuoteResource.class);
+        QuoteResource resource  = convertToGeneric(quoteDto, QuoteResource.class);
 
-        // 요청한 사용자가 좋아요/보관을 했는지 여부를 판단하여 세팅
+        // 요청한 사용자가 좋아요했는지 여부를 판단하여 세팅
         List<LikeDto> likes = quoteDto.getLikes();
         if(likes != null){
-           long cnt = likes.stream().filter(likeDto -> likeDto.getUserId().equals(userId)).count();
-           if(cnt > 0) { resource.setLikeYn(Boolean.TRUE); } else { resource.setLikeYn(Boolean.FALSE); }
+            resource.setLikeId(
+                    likes.stream().filter(likeDto -> likeDto.getUserId().equals(userId))
+                            .findAny().orElseGet(LikeDto::new).getLikeId()
+            );
         }
         return resource;
     }

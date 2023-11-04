@@ -32,9 +32,9 @@ public class HomeController {
     @GetMapping("/random-quote")
     @Operation(summary = "홈 화면 랜덤 명언 목록 조회",
             description  = "홈 화면 랜덤 명언 목록 조회",
-            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
+            responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = QuoteResource.class)))}
     )
-    public ApiRes<Page<RandomQuoteResource>> getRandomQuoteByUserId(
+    public ApiRes<Page<QuoteResource>> getRandomQuoteByUserId(
             @Parameter(description = "페이지 번호") @RequestParam("page") int page,
             @Parameter(description = "페이지 당 항목 수") @RequestParam("sizePerPage") int sizePerPage,
             @Parameter(description = "사용자 ID") @RequestParam("userId") Long userId
@@ -50,9 +50,9 @@ public class HomeController {
     @GetMapping("/bake-quote")
     @Operation(summary = "홈 화면 랜덤 명언 굽기",
             description  = "홈 화면 랜덤 명언 굽기",
-            responses = { @ApiResponse(responseCode = "200", description = "굽기 성공", content = @Content(schema = @Schema(implementation = RandomQuoteResource.class)))}
+            responses = { @ApiResponse(responseCode = "200", description = "굽기 성공", content = @Content(schema = @Schema(implementation = QuoteResource.class)))}
     )
-    public ApiRes<RandomQuoteResource> bakeRandomQuote(
+    public ApiRes<QuoteResource> bakeRandomQuote(
             @Parameter(description = "사용자ID") @RequestParam(value="userId", required=false) Long userId,
             @Parameter(description = "맛") @RequestParam(value="flavor", required=false) String flavor,
             @Parameter(description = "출처") @RequestParam(value="source", required=false) String source,

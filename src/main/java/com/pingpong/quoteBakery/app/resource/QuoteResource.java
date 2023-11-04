@@ -28,5 +28,8 @@ public class QuoteResource extends BaseResource {
 
     @Schema(description = "상황")
     private String mood;
+
+    @Schema(description = "좋아요ID")
+    private Long likeId;
 }
 
