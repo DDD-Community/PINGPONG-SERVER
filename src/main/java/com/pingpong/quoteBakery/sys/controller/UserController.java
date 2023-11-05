@@ -1,5 +1,6 @@
 package com.pingpong.quoteBakery.sys.controller;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
 import com.pingpong.quoteBakery.sys.dto.FBUserRequestDto;
@@ -26,7 +27,7 @@ public class UserController {
     private final CommonConverter commonConverter;
 
     @PostMapping("/signup")
-    public ApiRes<UserResource> signup(@RequestBody FBUserRequestDto requestDto) {
+    public ApiRes<UserResource> signup(@RequestBody FBUserRequestDto requestDto) throws FirebaseAuthException {
         return ApiRes.createSuccess(commonConverter.convertToGeneric(userService.saveByFireBase(requestDto), UserResource.class));
     }
 
