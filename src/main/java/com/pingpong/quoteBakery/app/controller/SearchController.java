@@ -6,6 +6,7 @@ import com.pingpong.quoteBakery.app.resource.QuoteResource;
 import com.pingpong.quoteBakery.app.resource.QuoteSearchResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
+import com.pingpong.quoteBakery.com.exception.BusinessInvalidValueException;
 import com.pingpong.quoteBakery.sys.dto.UserDto;
 import com.pingpong.quoteBakery.sys.service.TokenService;
 import com.pingpong.quoteBakery.sys.service.UserService;
@@ -41,7 +42,10 @@ public class SearchController {
             responses = { @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = QuoteResource.class)))}
     )
     public ApiRes<Page<QuoteResource>> searchQuotes(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody QuoteSearchResource searchResource){
-        UserDto userDto = userService.findByUid(tokenService.getCurrentTokenInfo().getUid());
+        String uid = tokenService.getCurrentTokenInfo().getUid();
+        if(uid == null) throw new BusinessInvalidValueException("명언 탐색을 위해 로그인해주세요.");
+
+        UserDto userDto = userService.findByUid(uid);
         return ApiRes.createSuccess(quoteService.searchQuotePages(quoteConverter.convertToGeneric(searchResource, QuoteMultiSearchDto.class), searchResource.getPageInfo())
                 .map(quote -> quoteConverter.convertDtoToRandomResource(quote, userDto.getId())));
     }
