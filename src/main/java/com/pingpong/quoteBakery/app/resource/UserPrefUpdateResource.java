@@ -1,7 +1,7 @@
 package com.pingpong.quoteBakery.app.resource;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 public class UserPrefUpdateResource {
-    @Schema(description = "사용자취향ID", requiredMode= RequiredMode.REQUIRED)
+    @Hidden
+    @Schema(description = "사용자취향ID")
     private Long userPrefId;
 
     @Schema(description = "맛 리스트")

@@ -8,7 +8,6 @@ import com.pingpong.quoteBakery.app.resource.UserPrefUpdateResource;
 import com.pingpong.quoteBakery.app.service.QuoteService;
 import com.pingpong.quoteBakery.app.service.UserPrefService;
 import com.pingpong.quoteBakery.com.api.response.ApiRes;
-import com.pingpong.quoteBakery.sys.resource.CommCdTpResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -77,13 +76,14 @@ public class MyPageController {
     /**
      * 사용자 취향 수정
      */
-    @PutMapping("/user-pref/{userId}")
+    @PutMapping("/user-pref/{userPrefId}")
     @Operation(summary = "사용자 취향 수정", description  = "사용자의 취향정보를 수정 한다.",
         responses = {@ApiResponse(responseCode = "200", description = "수정 성공", content = @Content(schema = @Schema(type = "number", description = "사용자취향ID")))}
     )
-    @Parameter(name = "userId", description = "사용자ID", in = ParameterIn.PATH)
-    public ApiRes<Long> saveUserPref(@PathVariable("userId") Long userId,
+    @Parameter(name = "userPrefId", description = "사용자취향ID", in = ParameterIn.PATH)
+    public ApiRes<Long> saveUserPref(@PathVariable("userPrefId") Long userPrefId,
         @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody UserPrefUpdateResource updateResource){
+        updateResource.setUserPrefId(userPrefId);
         return ApiRes.createSuccess(userPrefService.updateUserPref(quoteConverter.convertToGeneric(updateResource, UserPrefDto.class)));
     }
 }
