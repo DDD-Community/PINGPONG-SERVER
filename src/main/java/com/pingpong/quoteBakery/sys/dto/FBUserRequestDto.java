@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class FBUserRequestDto {
-    private String uid;
+    private String token;
     private String fcm;
     private String email;
     private String nickname;

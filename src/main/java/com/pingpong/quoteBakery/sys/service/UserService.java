@@ -1,5 +1,7 @@
 package com.pingpong.quoteBakery.sys.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.pingpong.quoteBakery.app.persistence.LikeRepository;
 import com.pingpong.quoteBakery.app.persistence.UserPreferenceRepository;
 import com.pingpong.quoteBakery.com.converter.CommonConverter;
@@ -33,11 +35,11 @@ public class UserService {
     private final LikeRepository likeRepository;
 
     @Transactional
-    public UserDto saveByFireBase(FBUserRequestDto userReqDto) {
+    public UserDto saveByFireBase(FBUserRequestDto userReqDto) throws FirebaseAuthException {
         String randRmk = makeRandomRmk();
 
         User user = userRepository.save(User.builder()
-                .uid(userReqDto.getUid())
+                .uid(FirebaseAuth.getInstance().verifyIdToken(userReqDto.getToken()).getUid())
                 .fcm(userReqDto.getFcm())
                 .email(userReqDto.getEmail())
                 .nickname(userReqDto.getNickname())
