@@ -26,10 +26,10 @@ public class User implements UserDetails {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "uid", nullable = true, unique = true)
+    @Column(name = "uid", nullable = true, unique = true, length = 2000)
     private String uid;
 
-    @Column(name = "fcm", nullable = true, unique = true)
+    @Column(name = "fcm", nullable = true, unique = true, length = 2000)
     private String fcm;
 
     @Column(name = "email", nullable = false, unique = true)
