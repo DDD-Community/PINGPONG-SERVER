@@ -1,16 +1,16 @@
 package com.pingpong.quoteBakery.app.resource;
 
-import com.pingpong.quoteBakery.com.resource.BaseResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 
 @Getter
 @Setter
-public class UserPrefUpdateResource extends BaseResource {
+public class UserPrefUpdateResource {
     @Schema(description = "사용자취향ID", requiredMode= RequiredMode.REQUIRED)
     private Long userPrefId;
 
