@@ -56,8 +56,11 @@ public class QuoteServiceImpl implements QuoteService {
     public List<QuoteDto> getLikedQuotes(Long userId) {
 
         return likeRepository.findAllByUser_Id(userId)
-            .stream().map(entity ->
-                quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class))
+            .stream().map(entity -> {
+                QuoteDto dto = quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class);
+                dto.setLikeId(entity.getLikeId());
+                return dto;
+            })
             .collect(Collectors.toList());
     }
 

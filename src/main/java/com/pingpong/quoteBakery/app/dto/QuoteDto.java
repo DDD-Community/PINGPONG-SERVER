@@ -26,5 +26,7 @@ public class QuoteDto extends BaseDto {
 
     // quoteConverter likes 변환용
     private Long userId;
+
+    private Long likeId;
 }
 
