@@ -73,7 +73,12 @@ public class UserService {
     }
 
     public UserDto findByUid(String uid){
-        User user = userRepository.findByUid(uid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+        User user = userRepository.findByUid(uid).orElseThrow(() -> new BusinessInvalidValueException("해당 UID에 대한 사용자 정보가 없습니다."));
+        return commonConverter.convertToGeneric(user, UserDto.class);
+    }
+
+    public UserDto findByEmail(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new BusinessInvalidValueException("해당 이메일에 대한 사용자 정보가 없습니다."));
         return commonConverter.convertToGeneric(user, UserDto.class);
     }
 

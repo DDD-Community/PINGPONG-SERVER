@@ -70,6 +70,16 @@ public class UserController {
         return ApiRes.createSuccess(commonConverter.convertToGeneric(userService.findById(id), UserResource.class));
     }
 
+    @GetMapping("/search-user-by-email/{email}")
+    @Operation(summary = "email로 유저 조회",
+            description = "email로 사용자를 조회한다",
+            responses = {@ApiResponse(responseCode = "200", description = "조회 성공")}
+    )
+    @Parameter(name = "email", description = "email", in = ParameterIn.PATH)
+    public ApiRes<UserResource> searchUserByEmail(@PathVariable("email") String email) {
+        return ApiRes.createSuccess(commonConverter.convertToGeneric(userService.findByEmail(email), UserResource.class));
+    }
+
     /*
     * 회원 탈퇴
     * */
