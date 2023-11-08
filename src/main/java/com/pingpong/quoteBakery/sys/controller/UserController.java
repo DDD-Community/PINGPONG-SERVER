@@ -73,12 +73,14 @@ public class UserController {
     /*
     * 회원 탈퇴
     * */
-    @PostMapping("/withdrawal")
+    @PostMapping("/withdrawal/{userId}")
     @Operation(summary = "회원 탈퇴",
             description = "회원 정보 삭제 및 탈퇴 사유를 저장한다.",
             responses = {@ApiResponse(responseCode = "200", description = "탈퇴 성공")}
     )
-    public ApiRes<?> signup(@RequestBody UserWithdrawalResource withdrawalResource) {
+    @Parameter(name = "userId", description = "userId", in = ParameterIn.PATH)
+    public ApiRes<?> signup(@PathVariable("userId") Long userId, @RequestBody UserWithdrawalResource withdrawalResource) {
+        withdrawalResource.setUserId(userId);
         userService.withdrawalAccount(commonConverter.convertToGeneric(withdrawalResource, WithdrawalDto.class));
         return ApiRes.createSuccessWithNoContent();
     }

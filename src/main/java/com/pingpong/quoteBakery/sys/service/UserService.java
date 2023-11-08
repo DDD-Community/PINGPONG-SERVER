@@ -87,12 +87,13 @@ public class UserService {
 
     @Transactional
     public void withdrawalAccount(WithdrawalDto dto){
+        User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 사용자 정보가 없습니다."));
+
         String tokenUid = tokenService.getCurrentTokenInfo().getUid();
-        String requestUid = dto.getUid();
+        String requestUid = user.getUid();
 
         if(!requestUid.equals(tokenUid)) throw new BusinessInvalidValueException("본인만 회원 탈퇴할 수 있습니다.");
 
-        User user = userRepository.findByUid(requestUid).orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
         userPreferenceRepository.deleteAllByUserId(user.getId());
         likeRepository.deleteAllByUserId(user.getId());
         userRepository.delete(user);

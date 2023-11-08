@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class WithdrawalDto {
-    private String uid;
+    private Long userId;
     private String reason;
 }
