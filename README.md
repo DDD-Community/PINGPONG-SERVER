@@ -7,7 +7,7 @@ About DDD 9기 IOS 3팀 SERVER
 
 ## Skill Stack
 - 🍃 SpringBoot 3.0.3
-- Java 17
+- Java 17(zulu)
 - PostgreSQL
 - JPA/QueryDsl
 - Github Action(CI/CD)
