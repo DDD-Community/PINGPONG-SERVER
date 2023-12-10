@@ -36,8 +36,11 @@ public class QuoteServiceImpl implements QuoteService {
 
     @Override
     public Page<QuoteDto> searchRandomQuotesByUser(Long userId, Pageable pageable) {
-        UserPrefDto userPrefDto = userPrefService.getUserPrefByUserId(userId);
-        QuoteMultiSearchDto searchDto = quoteConverter.convertToGeneric(userPrefDto, QuoteMultiSearchDto.class);
+        QuoteMultiSearchDto searchDto = new QuoteMultiSearchDto();
+        if (userId != null) {
+            UserPrefDto userPrefDto = userPrefService.getUserPrefByUserId(userId);
+            searchDto = quoteConverter.convertToGeneric(userPrefDto, QuoteMultiSearchDto.class);
+        }
         return this.searchQuotes(searchDto, pageable);
     }
 
@@ -56,12 +59,12 @@ public class QuoteServiceImpl implements QuoteService {
     public List<QuoteDto> getLikedQuotes(Long userId) {
 
         return likeRepository.findAllByUser_Id(userId)
-            .stream().map(entity -> {
-                QuoteDto dto = quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class);
-                dto.setLikeId(entity.getLikeId());
-                return dto;
-            })
-            .collect(Collectors.toList());
+                .stream().map(entity -> {
+                    QuoteDto dto = quoteConverter.convertToGeneric(entity.getQuote(), QuoteDto.class);
+                    dto.setLikeId(entity.getLikeId());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     private Page<QuoteDto> searchQuotes(QuoteMultiSearchDto searchDto, Pageable pageable) {
@@ -79,10 +82,10 @@ public class QuoteServiceImpl implements QuoteService {
     public Long saveLike(LikeDto likeDto) {
         User user = userService.findById(likeDto.getUserId());
         Quote quote = quoteRepository.findById(likeDto.getQuoteId())
-            .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+                .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
 
         boolean existYn = likeRepository.existsByUserAndQuote(user, quote);
-        if(existYn) throw new BusinessInvalidValueException("이미 좋아요 등록된 명언입니다.");
+        if (existYn) throw new BusinessInvalidValueException("이미 좋아요 등록된 명언입니다.");
 
         return likeRepository.save(Like.toEntity(user, quote)).getLikeId();
     }
@@ -96,7 +99,7 @@ public class QuoteServiceImpl implements QuoteService {
         String tokenUid = tokenService.getCurrentTokenInfo().getUid();
         String requestUid = like.getUser().getUid();
 
-        if(!requestUid.equals(tokenUid)) throw new BusinessInvalidValueException("본인만 좋아요 취소할 수 있습니다.");
+        if (!requestUid.equals(tokenUid)) throw new BusinessInvalidValueException("본인만 좋아요 취소할 수 있습니다.");
 
         likeRepository.delete(like);
     }
