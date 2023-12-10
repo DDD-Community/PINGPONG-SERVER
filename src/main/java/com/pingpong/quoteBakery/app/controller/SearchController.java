@@ -43,11 +43,10 @@ public class SearchController {
     )
     public ApiRes<Page<QuoteResource>> searchQuotes(@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody QuoteSearchResource searchResource){
         String uid = tokenService.getCurrentTokenInfo().getUid();
-        if(uid == null) throw new BusinessInvalidValueException("명언 탐색을 위해 로그인해주세요.");
+        Long userId = uid == null || uid.isBlank() ? null : userService.findByUid(uid).getId();
 
-        UserDto userDto = userService.findByUid(uid);
         return ApiRes.createSuccess(quoteService.searchQuotePages(quoteConverter.convertToGeneric(searchResource, QuoteMultiSearchDto.class), searchResource.getPageInfo())
-                .map(quote -> quoteConverter.convertDtoToRandomResource(quote, userDto.getId())));
+                .map(quote -> quoteConverter.convertDtoToRandomResource(quote, userId)));
     }
 }
 

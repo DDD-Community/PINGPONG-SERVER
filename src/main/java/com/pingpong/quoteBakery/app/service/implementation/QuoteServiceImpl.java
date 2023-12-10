@@ -82,7 +82,7 @@ public class QuoteServiceImpl implements QuoteService {
     public Long saveLike(LikeDto likeDto) {
         User user = userService.findById(likeDto.getUserId());
         Quote quote = quoteRepository.findById(likeDto.getQuoteId())
-                .orElseThrow(() -> new BusinessInvalidValueException("해당 ID에 대한 정보가 없습니다."));
+                .orElseThrow(() -> new BusinessInvalidValueException("해당 명언에 대한 정보가 없습니다."));
 
         boolean existYn = likeRepository.existsByUserAndQuote(user, quote);
         if (existYn) throw new BusinessInvalidValueException("이미 좋아요 등록된 명언입니다.");
