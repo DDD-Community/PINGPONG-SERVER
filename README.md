@@ -3,71 +3,154 @@ About DDD 9기 IOS 3팀 SERVER
 
 ## About Service
 - 🥖 명언제과점
+- 개인 취향별 맞춤 명언 추천 서비스
 
 ## Skill Stack
 - 🍃 SpringBoot 3.0.3
-- Java 17
-- JPA/QueryDsl/PostgreSQL
-- Github Action
+- Java 17(zulu)
+- PostgreSQL
+- JPA/QueryDsl
+- Github Action(CI/CD)
 - AWS EC2/RDS
 - Docker
-- Swagger
+- Swagger(springdoc-openapi:2.0.4)
 
 ## 🌟 Team
-|Developer|Designer|Designer|Developer|Developer|
+|Server Developer|Designer|Designer|iOS Developer|iOS Developer|
 |:---:|:---:|:---:|:---:|:---:|
 | <a href="https://github.com/Hyesooo"><img height="130px" width="130px" src="https://github.com/DDD-Community/PINGPONG-IOS/assets/87685946/bc02ac38-c9fe-4122-bed8-e1fbfb588567"/></a>|<a href=""><img height="130px" width="130px" src="https://github.com/DDD-Community/PINGPONG-IOS/assets/87685946/41bc501c-a144-4886-95c8-2d9fcc5815f2"/></a>|<a href=""><img height="130px" width="130px" src="https://github.com/DDD-Community/PINGPONG-IOS/assets/87685946/f0bf90cf-5464-45db-9362-ec3f2fa3411b"/></a>|<a href="https://github.com/Byeonjinha"><img height="130" width="130px" src="https://github.com/DDD-Community/PINGPONG-IOS/assets/87685946/8874c20c-06d4-4ea2-b069-29a32bbd8e4b"/></a>|<a href="https://github.com/Roy-wonj"><img height="130" width="130px" src="https://github.com/DDD-Community/PINGPONG-IOS/assets/87685946/07d3fa91-c702-4204-b0e9-00b554870675"/></a>|
 |<a href="https://github.com/Hyesooo">김혜수</a>|<a href="">남윤지</a>|<a href="">박주미</a>|<a href="https://github.com/Byeonjinha">변진하</a>|<a href="https://github.com/Roy-wonji">서원지</a>|
 
+## Project Structure
+```
+├── java
+│   └── com
+│       └── pingpong 
+│           └── quoteBakery
+│               ├── QuoteBakeryApplication.java
+│               ├── app // 도메인 관련
+│               │   ├── controller
+│               │   │   ├── HomeController.java
+│               │   │   ├── MyPageController.java
+│               │   │   ├── OnBoardController.java
+│               │   │   └── SearchController.java
+│               │   ├── domain
+│               │   │   ├── Like.java
+│               │   │   ├── Quote.java
+│               │   │   └── UserPreference.java
+│               │   ├── dto
+│               │   │   ├── LikeDto.java
+│               │   │   ├── QuoteDto.java
+│               │   │   ├── QuoteMultiSearchDto.java
+│               │   │   ├── QuoteSingleSearchDto.java
+│               │   │   └── UserPrefDto.java
+│               │   ├── enums
+│               │   │   ├── QuoteFlavor.java
+│               │   │   ├── QuoteMood.java
+│               │   │   └── QuoteSource.java
+│               │   ├── persistence
+│               │   │   ├── LikeRepository.java
+│               │   │   ├── QuoteRepository.java
+│               │   │   ├── QuoteRepositoryCustom.java
+│               │   │   ├── UserPreferenceRepository.java
+│               │   │   └── implementation
+│               │   │       └── QuoteRepositoryImpl.java
+│               │   ├── resource
+│               │   │   ├── LikeCreateResource.java
+│               │   │   ├── LikeResource.java
+│               │   │   ├── QuoteConverter.java
+│               │   │   ├── QuoteResource.java
+│               │   │   ├── QuoteSearchResource.java
+│               │   │   ├── RandomQuoteSearchPageResource.java
+│               │   │   ├── RandomQuoteSearchResource.java
+│               │   │   ├── UserPrefCreateResource.java
+│               │   │   ├── UserPrefResource.java
+│               │   │   └── UserPrefUpdateResource.java
+│               │   └── service
+│               │       ├── QuoteService.java
+│               │       ├── UserPrefService.java
+│               │       └── implementation
+│               │           ├── QuoteServiceImpl.java
+│               │           └── UserPrefServiceImpl.java
+│               ├── com // 공통 컴포넌트(API 응답, 예외처리 등)
+│               │   ├── api
+│               │   │   └── response
+│               │   │       └── ApiRes.java
+│               │   ├── converter
+│               │   │   └── CommonConverter.java
+│               │   ├── dto
+│               │   │   └── BaseDto.java
+│               │   ├── entity
+│               │   │   ├── BaseEntity.java
+│               │   │   └── QueryDslSupport.java
+│               │   ├── exception
+│               │   │   ├── BusinessInvalidValueException.java
+│               │   │   └── GlobalExceptionHandler.java
+│               │   ├── resource
+│               │   │   ├── BaseResource.java
+│               │   │   └── PageResource.java
+│               │   └── util
+│               │       └── StringUtil.java
+│               └── sys // 유저, 권한, 코드 등 시스템 관련
+│                   ├── config
+│                   │   ├── FirebaseInitializer.java
+│                   │   └── WebSecurityConfig.java
+│                   ├── controller
+│                   │   ├── CodeController.java
+│                   │   └── UserController.java
+│                   ├── domain
+│                   │   ├── CommCd.java
+│                   │   ├── CommCdTp.java
+│                   │   ├── User.java
+│                   │   └── WithdrawalReason.java
+│                   ├── dto
+│                   │   ├── CommCdDto.java
+│                   │   ├── CommCdTpDto.java
+│                   │   ├── FBUserRequestDto.java
+│                   │   ├── TokenDto.java
+│                   │   ├── UserDto.java
+│                   │   └── WithdrawalDto.java
+│                   ├── filter
+│                   │   └── FirebaseFilter.java
+│                   ├── repository
+│                   │   ├── CommCdRepository.java
+│                   │   ├── CommCdTpRepository.java
+│                   │   ├── UserRepository.java
+│                   │   └── WithdrawalRepository.java
+│                   ├── resource
+│                   │   ├── CommCdConverter.java
+│                   │   ├── CommCdResource.java
+│                   │   ├── CommCdTpResource.java
+│                   │   ├── UserResource.java
+│                   │   ├── UserUpdateResource.java
+│                   │   └── UserWithdrawalResource.java
+│                   └── service
+│                       ├── CommCdService.java
+│                       ├── CommCdTpService.java
+│                       ├── TokenService.java
+│                       ├── UserDetailService.java
+│                       ├── UserService.java
+│                       └── implementation
+│                           ├── CommCdServiceImpl.java
+│                           ├── CommCdTpServiceImpl.java
+│                           └── TokenServiceImpl.java
+└── resources // 설정 파일
+    ├── application-dev.yml
+    ├── application-local.yml
+    ├── application-prod.yml
+    ├── application.yml
+    ├── firebase.json
+    ├── static
+    └── templates
 
-## 🐈‍⬛ Git
+```
+### ERD
+<img width="615" alt="스크린샷 2023-12-02 15 08 23" src="https://github.com/DDD-Community/PINGPONG-SERVER/assets/25236852/8ddba3e1-40e0-4d81-99a3-e914c6f148f5">
 
-### 1️⃣ Git branching Strategy
+### APIs
+http://3.39.40.128:9090/swagger-ui/index.html#
 
-- Origin(master branch)
-- Origin(develop branch)
-- Local(feature branch)
-
-### 2️⃣ how to apply
-1. Pull the **Dev** branch of the Origin
-2. Make a **Feature** branch in the Local area
-3. Developed by **Feature** branch
-4. Push the **Feature** from Local to Origin
-5. Send a pull request from the origin's **Feature** to the Origin's **Dev**
-6. In Origin **Dev**, resolve conflict and merge
-7. Fetch and rebase Origin **Dev** from Local **Dev**
-
-### 3️⃣ Commit Msg Rule
-> 커밋 제목은 최대 50자 입력 </br>
-본문은 한 줄 최대 72자 입력 </br>
-Commit 메세지 </br>
-
-🪛[chore]: 코드 수정, 내부 파일 수정. </br>
-✨[feat]: 새로운 기능 구현. </br>
-🎨[style]: 스타일 관련 기능.(코드의 구조/형태 개선) </br>
-➕[add]: Feat 이외의 부수적인 코드 추가, 라이브러리 추가 </br>
-🔧[file]: 새로운 파일 생성, 삭제 시 </br>
-🐛[fix]: 버그, 오류 해결. </br>
-🔥[del]: 쓸모없는 코드/파일 삭제. </br>
-📝[docs]: README나 WIKI 등의 문서 개정. </br>
-💄[mod]: storyboard 파일,UI 수정한 경우. </br>
-✏️[correct]: 주로 문법의 오류나 타입의 변경, 이름 변경 등에 사용합니다. </br>
-🚚[move]: 프로젝트 내 파일이나 코드(리소스)의 이동. </br>
-⏪️[rename]: 파일 이름 변경이 있을 때 사용합니다. </br>
-⚡️[improve]: 향상이 있을 때 사용합니다. </br>
-♻️[refactor]: 전면 수정이 있을 때 사용합니다. </br>
-🔀[merge]: 다른브렌치를 merge 할 때 사용합니다. </br>
-✅ [test]: 테스트 코드를 작성할 때 사용합니다. </br>
-
-#### Commit Body 규칙
-> 제목 끝에 마침표(.) 금지 </br>
-한글로 작성 </br>
-브랜치 이름 규칙
-
-- `STEP1`, `STEP2`, `STEP3`
-
-#### ETC
-- `master` 브랜치는 앱 출시 
-- `Develop`는 테스트 및 각종 파일 merge
-- 각 스텝 뱔로 `feature` 브런치 생성해서 관리 
-
+### WIKI
+🔗 [스프링부트 3.0 프로젝트 생성/세팅 기록](https://github.com/14-team13/acoe-backend/wiki/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%83%9D%EC%84%B1%EA%B8%B0%EB%A1%9D)  
+🔗 [깃헙액션 CICD 파이프라인 구축 기록](https://github.com/14-team13/acoe-backend/wiki/CICD-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%EA%B8%B0%EB%A1%9D)([CD.yml](https://github.com/DDD-Community/PINGPONG-SERVER/blob/develop/.github/workflows/CD-dev.yml), [CI.yml](https://github.com/DDD-Community/PINGPONG-SERVER/blob/develop/.github/workflows/CI-dev.yml))   
+🔗 [깃헙 서브모듈로 설정정보 보호기록](https://github.com/14-team13/acoe-backend/wiki/Submodule%EB%A1%9C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EC%A0%95%EC%A0%95%EB%B3%B4-%EB%B3%B4%ED%98%B8-%EA%B8%B0%EB%A1%9D)  
