@@ -5,6 +5,11 @@ About DDD 9기 IOS 3팀 SERVER
 - 🥖 명언제과점
 - 개인 취향별 맞춤 명언 추천 서비스
 
+## iOS AppStore
+아이폰 앱 스토어에서 앱을 다운로드 받을 수 있습니다.
+<br/>
+<a href="https://apps.apple.com/kr/app/%EB%AA%85%EC%96%B8%EC%A0%9C%EA%B3%BC%EC%A0%90/id6472920141"><img src="./badge-download-on-the-app-store.png"></a>
+
 ## Skill Stack
 - 🍃 SpringBoot 3.0.3
 - Java 17(zulu)
